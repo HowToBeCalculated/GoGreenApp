@@ -1,0 +1,30 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+
+# if pre-commit isn't installed, use 'pip install pre-commit'
+# install all hooks by running 'pre-commit install'
+# once all set, every `git commit` will run the validation
+# pass `--no-verify` to skip the validation (i.e. 'git commit -m "commit message" --no-verify')
+
+# naturally, only touched files are ran during 'git commit'
+# use `pre-commit run --all-files` to run all hooks on all files
+repos:
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: V3.2.0
+  hooks:
+  - id: check-added-large-files # check for large files
+  - id: check-case-conflict # check for case conflicts in filenames
+  - id: check-docstring-first # check docstring is the first thing in a function
+  - id: check-ast # check for parse errors in python files
+  - id: check-merge-conflict # check for merge conflict markers
+  - id: check-yaml # check for valid yaml
+  - id: debug-statements # check for debugger imports and py37+ breakpoint()
+  - id: end-of-file-fixer # check for missing newline at end of file
+  - id: trailing-whitespace # check for trailing whitespace
+
+- repo: https://github.com/charliemarch/ruff-pre-commit
+  rev: 'v0.0.255'
+  hooks:
+  - id: ruff
+    args: [--config, .ruff.toml]
+    stages: [commit, push]
