@@ -1,0 +1,11 @@
+# Whether or not to fix fixable issues. All settings: https://beta.ruff.rs/docs/settings/#fix
+fix = false
+
+# Increase allowed line-length without completely removing the check (default is 88)
+line-length = 200
+
+# Enable pycodestyle (`E`) and Pyflakes (`F`) codes by default. Many more available: https://beta.ruff.rs/docs/rules/
+select = ["E", "F"]
+
+# Never enforce `E731` (strives for declared functions over lambda)
+ignore ["E731"]
