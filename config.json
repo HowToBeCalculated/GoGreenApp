@@ -1,0 +1,10 @@
+{
+  "rds_host": "NA",
+  "rds_port": "NA",
+  "rds_user": "NA",
+  "rds_password": "NA",
+  "rds_db": "NA",
+  "server_host": "localhost",
+  "server_port": "8080"
+}
+
