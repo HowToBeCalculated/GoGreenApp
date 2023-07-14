@@ -4,7 +4,7 @@ import { AppBar, Typography, Link, IconButton, Button, Toolbar, Tabs, Tab} from 
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LinkTab from '@mui/material/Link';
 import { NavLink } from 'react-router-dom';
-import { LoggedInContext } from '../pages/LoggedInContext';
+import { LoggedInContext, UserContext } from '../pages/LoggedInContext';
 
 const styled = {fontFamily : "Poppins", textTransform:"none", ':hover': {color:"#55BDB3"}}
 const linkStyle = {
@@ -15,10 +15,10 @@ const linkStyle = {
     }
 
 export const NavBar = () => {
-
 // Toolbar to add elements in a structured way (propreties: flex and additional)
 // NB mx is margin on both sides
-const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
+const loggedIn = useContext(LoggedInContext);
+const user = useContext(UserContext);
 const [value, setValue] = useState();
 return (
     <div>
@@ -55,7 +55,7 @@ return (
                         <NavLink to='/profile' style={linkStyle}> {'Profile'} </NavLink>
                     </LinkTab>
                     <LinkTab sx={styled}>
-                        <NavLink to='/dashboard' style={linkStyle}> {'Dashboard'} </NavLink> 
+                        <NavLink to={`/dashboard/${user}`} style={linkStyle}> {'Dashboard'} </NavLink> 
                     </LinkTab>
                     <LinkTab sx={styled}>
                         <NavLink to='/footprint' style={linkStyle}> {'Footprint'} </NavLink> 

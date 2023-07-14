@@ -6,6 +6,7 @@ import {Box} from '@mui/material';
 import ListItemText from '@mui/material/ListItemText';
 import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded';
 import InboxRoundedIcon from '@mui/icons-material/InboxRounded';
+import GoGreenPieChart from '..\components\GoGreenPieChart';
 
 
 //<ListItemIcon>{">"}</ListItemIcon> to have this before the text in list

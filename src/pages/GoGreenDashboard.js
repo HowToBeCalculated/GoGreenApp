@@ -1,14 +1,15 @@
 // TO DO IMPLEMENT DASHBOARD 
-import React, {useState} from 'react';
+import React, {useState, useParams, useEffect, useContext} from 'react';
 import { Container, Typography, Box, Pagination, Grid } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import Chart from '../components/GoGreenChart.js'
 import OutlinedCard from '../components/GoGreenStatCard';
-import {List, Collapse, ListItem, ListItemButton, ListItemIcon} from '@mui/material';
+import {List, Collapse, ListItem, ListItemButton, ListItemIcon, Paper} from '@mui/material';
 import ListItemText from '@mui/material/ListItemText';
 import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded';
 import InboxRoundedIcon from '@mui/icons-material/InboxRounded';
-
+import GoGreenBarChart from '../components/GoGreenBarChart';
+import { LoggedInContext, UserContext } from './LoggedInContext.js';
 
 const flexFormat_menu = { display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'left' };
 const flexFormat = { display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly' };
@@ -66,10 +67,92 @@ const rows = [
     { id: 9, category: 'Transport', activity: 'Train', parameter: 'money', targetValue : 65 },
   ];
 
+  // 21.25 is avg per month since 0.7/day and 255kg per year
+const data = [
+  {
+    "name": "January",
+    "actual": 30,
+    "target": 25,
+    "avg": 22.25
+  },
+  {
+    "name": "Feburary",
+    "actual": 28,
+    "target": 24,
+    "avg": 22.25
+  },
+  {
+    "name": "March",
+    "actual": 25,
+    "target": 22,
+    "avg": 22.25
+  },
+  {
+    "name": "April",
+    "actual": 30,
+    "target": 19,
+    "avg": 22.25
+  },
+  {
+    "name": "May",
+    "actual": 24,
+    "target": 18,
+    "avg": 22.25
+  },
+  {
+    "name": "June",
+    "actual": 20,
+    "target": 22,
+    "avg": 22.25
+  },
+  {
+    "name": "July",
+    "actual": 23,
+    "target": 19,
+    "avg": 22.25
+  }
+]
+
+
+
+// reusable element for the chart for each category
+export const ChartComponent = () => {
+
+  return(
+    <div>
+    <Paper
+    sx={{
+      p: 2,
+      display: 'flex',
+      flexDirection: 'column',
+      height: 240,
+    }}
+    >
+    <Typography>Insert Header</Typography>
+    <GoGreenBarChart/>
+  </Paper>
+  </div>
+  );
+
+}
+
+
+
 // could make the data grid so that we have an entry for each category exactly 
 // i.e. so that there is no need to add another row
 const GoGreenDashboard = () => {
+  //const { user_id } = useParams();
   const [isDashboard, setIsDashboard] = useState(true);
+  const [dashboardData, setDashboardData] = useState([]);
+  const user = useContext(UserContext);
+  console.log('current user is: ', user);
+
+  //fetch data from the database
+  useEffect(() => {
+    // insert fetch query for the database - for now we set to manual data 
+    setDashboardData(rows);
+  });
+
   return (
     <Container style={flexFormat}>
         <Box sx={{ width: '100%', maxWidth: 200, bgcolor: "secondary" }}>
@@ -109,7 +192,7 @@ const GoGreenDashboard = () => {
               }}
               pageSizeOptions={[5]}
             columns={columns} 
-            rows={rows} 
+            rows={dashboardData} 
             checkboxSelection/>
         </Box>)}
         {isDashboard &&
@@ -118,7 +201,7 @@ const GoGreenDashboard = () => {
                 sx={{ color:"secondary", fontSize : '20px', marginBottom : '10px', marginTop : '20px', marginLeft : '20px'}}>
                 Dashboard
             </Typography>
-            <Grid container spacing={5}>
+            <Grid container spacing={4}>
                 <Grid item xs={3} >
                     <OutlinedCard stat={'Transport'} value={721000} change={11.01}/>
                 </Grid>
@@ -131,8 +214,31 @@ const GoGreenDashboard = () => {
                 <Grid item xs={3} >
                     <OutlinedCard stat={'Personal Care'} value={239000} change={-1.48}/>
                 </Grid>
-            </Grid>
+            <Grid item xs={12} >
+            <Paper
+                  sx={{
+                    p: 2,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: 240,
+                  }}
+                >
             <Chart/>
+            </Paper>
+            </Grid>
+            <Grid item xs={6} >
+              <ChartComponent/>
+            </Grid>
+            <Grid item xs={6} >
+            <ChartComponent/>
+            </Grid>
+            <Grid item xs={6}>
+              <ChartComponent/>
+            </Grid>
+            <Grid item xs={6}>
+              <ChartComponent/>
+            </Grid>
+            </Grid>
         </Box>}
     </Container>
   )

@@ -15,15 +15,15 @@ export default function OutlinedCard({stat, value, change}) {
     return (
     <>
     <Box sx={{ minWidth: 130 }}>
-    <Card variant="outlined">
+    <Card variant="outlined" style={{backgroundColor: "#ede7f6",  borderRadius: '10%', borderColor: 'white'}}>
       <CardContent>
-        <Typography sx={{ fontSize: 14 }} color="secondary" gutterBottom>
+        <Typography sx={{ fontSize: 14 }} color="secondary">
           {stat}
         </Typography>
         <Typography variant="h5" component="div">
           {value}
         </Typography>
-        <Typography sx={{ mb: 1.5 }} color="secondary">
+        <Typography color="secondary">
           {change}{'%'}{(change < 0) ? <TrendingDownIcon style={{fontSize:'10px'}}/> : <TrendingUpIcon style={{fontSize:'10px'}}/>}
         </Typography>
       </CardContent>

@@ -1,3 +1,4 @@
+//can be REMOVED
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import leaves from './GoGreenSignin.png';
 import theme from './GoGreenTheme';
+import { SettingsInputSvideoTwoTone } from '@mui/icons-material';
 
 export default function SignInSide() {
   const handleSubmit = (event) => {
@@ -88,6 +90,9 @@ export default function SignInSide() {
                     <Typography sx={{fontSize : "12px"}}>Forgot your password? 
                   <Link sx={{fontWeight : 700, marginLeft : '5px'}} href="#" variant="body2">
                      Reset your password
+                  </Link>
+                  <Link sx={{fontWeight : 700, marginLeft : '80px'}} href="#" variant="body2">
+                     Create Account
                   </Link>
                   </Typography>
                 </Grid>
