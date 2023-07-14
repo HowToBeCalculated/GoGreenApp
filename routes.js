@@ -48,4 +48,3 @@ const practice = async function(req, res) {
 const community = async function(req, res) {
     //TO BE IMPLEMENTED
 }
-
