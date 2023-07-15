@@ -74,9 +74,8 @@ const GoGreenFootprint = () => {
   
   return (
     <div>
-    <Container>
+    <Container sx={{mb: 10}}>
       <Typography variant='h4' sx={styled}>Data Entry</Typography>
-      <Box component="form" noValidate onSubmit={search} sx={{ mt: 1 }}>
         <Grid container spacing={3}>
           <Grid item xs={3}>
             <Paper sx={{padding: 3, height: 250, width: 300}}>
@@ -93,6 +92,7 @@ const GoGreenFootprint = () => {
               <GoGreenPieChart/>
           </Grid>
         </Grid>
+        <Box component="form" noValidate onSubmit={search}>
         <TextField 
           id="search" 
           label="Enter search term" 

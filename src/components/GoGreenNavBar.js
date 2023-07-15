@@ -6,7 +6,7 @@ import LinkTab from '@mui/material/Link';
 import { NavLink } from 'react-router-dom';
 import { LoggedInContext, UserContext } from '../pages/LoggedInContext';
 
-const styled = {fontFamily : "Poppins", textTransform:"none", ':hover': {color:"#55BDB3"}}
+const styled = {mt: 2.5, fontFamily : "Poppins", textTransform:"none", ':hover': {color:"#55BDB3"}}
 const linkStyle = {
     color: 'inherit',
     textDecoration: 'none',
