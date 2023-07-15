@@ -10,6 +10,7 @@ import GoGreenDashboard from './pages/GoGreenDashboard';
 import GoGreenFootprint from './pages/GoGreenFootprint';
 import GoGreenPractice from './pages/GoGreenPractice';
 import GoGreenCommunity from './pages/GoGreenCommunity';
+import GoGreenInfo from  './pages/GoGreenInfo';
 import {LoggedInProvider} from './pages/LoggedInContext';
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
           <Route path="/footprint" element={<GoGreenFootprint />}/>
           <Route path="/practice" element={<GoGreenPractice />}/>
           <Route path="/community" element={<GoGreenCommunity />}/>
+          <Route path="/info" element={<GoGreenInfo />}/>
         </Routes>
       </BrowserRouter>
       </ThemeProvider>

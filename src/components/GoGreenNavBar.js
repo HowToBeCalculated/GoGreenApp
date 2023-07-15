@@ -64,6 +64,9 @@ return (
                         <NavLink to='/practice' style={linkStyle}> {'Practice'} </NavLink> 
                     </LinkTab>
                     <LinkTab sx={styled}>
+                        <NavLink to='/info' style={linkStyle}> {'Info'} </NavLink> 
+                    </LinkTab>
+                    <LinkTab sx={styled}>
                         <NavLink to='/community' style={linkStyle}> {'Community'} </NavLink> 
                     </LinkTab>
                 </Tabs>
