@@ -1,19 +1,35 @@
 from flask import Flask, request, jsonify
-from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from typing import List, Optional
 
-app = Flask(__name__) # initialize flask app
+from db_tables import (
+    db,
+    User,
+    Group,
+    Membership,
+    Activity,
+    Goals,
+    History,
+)
+
+def create_app():
+    app = Flask(__name__)
+    app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///gogreen.db"
+
+    db.init_app(app)
+
+    return app
+
+app = create_app()
 CORS(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///C:\\SQLite\\gogreen.db"
-db = SQLAlchemy(app)
 
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
-    password = db.Column(db.String(80), nullable=False)
+def serialize(model: db.Model, keys: Optional[List[str]] = None):
+    """Transforms a model into a dictionary which can be dumped to JSON."""
+    if keys:
+        return {key: getattr(model, key) for key in keys}
 
-with app.app_context():
-    db.create_all()
+    # otherwise return all
+    return dict(filter(lambda x: not x[0].startswith('_'), model.__dict__.items()))
 
 
 @app.route('/signup', methods=['GET'])
@@ -31,17 +47,17 @@ def signup():
     print(request.get_json())
     username = request.json.get('username')
     password = request.json.get('password')
-    
+
     if not username or not password:
         return jsonify({"msg": "Missing username or password"}), 400
-    
+
     if User.query.filter_by(username=username).first():
         return jsonify({"msg": "Username already exists"}), 400
-    
+
     user = User(username=username, password=password)
     db.session.add(user)
     db.session.commit()
-    
+
     return jsonify({"msg": "User created successfully", "success": "true"}), 201
 
 
@@ -62,4 +78,3 @@ def login():
 
 if __name__ == '__main__':
     app.run(debug=True)
-    

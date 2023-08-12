@@ -1,23 +1,17 @@
-ARG PYTHON_MAJOR_VERSION=3.11
+# Use an official Node.js runtime as a parent image
+FROM node:14
 
-# via https://github.com/pypa/pipenv/issues/3160#issuecomment-510951442
-FROM python:${PYTHON_MAJOR_VERSION}-slim AS base
+# Set the working directory in the Docker container
+WORKDIR /apps
 
-ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1 
+# Copy package.json and package-lock.json to the Docker container
+COPY package*.json ./
 
-RUN pip install --upgrade pip
-RUN pip install --upgrade --no-cache-dir pipenv
-RUN pip install pytest
+# Install all dependencies
+RUN npm install
 
-WORKDIR /app
+# Copy the rest of the application to the Docker container
+COPY . .
 
-COPY Pipfile Pipfile.lock ./
-
-RUN echo PIP_IGNORE_INSTALLED=1 >> .env
-
-# Note: ensure that these variables are set during
-# pipenv lock
-RUN pipenv install --system --deploy --ignore-pipfile 
-
-CMD ["tail", "-f", "/dev/null"]
+# Start the application
+CMD [ "npm", "start" ]

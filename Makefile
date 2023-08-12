@@ -16,12 +16,7 @@ destroy:
 	docker rmi -f $(shell docker-compose images -q)
 
 up:
-	docker-compose up -d
-	sleep 5
-	docker-compose ps
+	docker build -t gogreenapp .
 
 run:
-	docker exec -it $(call get_container_id) python app.py
-
-test:
-	docker exec -it $(call get_container_id) pytest
+	docker run -p 8000:8000 gogreenapp
