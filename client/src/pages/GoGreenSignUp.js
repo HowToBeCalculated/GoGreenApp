@@ -3,15 +3,13 @@ import {useState, useContext} from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import { ButtonGroup, Avatar } from '@mui/material';
 import leaves from './GoGreenSignin.png';
 import theme from './GoGreenTheme';
@@ -25,7 +23,7 @@ export default function SignUpSide() {
 
   //add new user to the database
   async function add_user (header, username) {
-    fetch(`http://${config.server_host}:${config.server_port}/createuser`, header)
+    fetch(`http://localhost:5000/createuser`, header)
     .then(data => {
     if (!data.ok) {
       throw Error(data.status);
@@ -54,6 +52,7 @@ export default function SignUpSide() {
     const username = data.get('username');
     const pw = data.get('password');
     let update = {'username' : username, 'password' : pw}
+    console.log('inputs: ', username, pw);
     const options = {
     method: 'POST',
     headers: {
@@ -72,18 +71,17 @@ export default function SignUpSide() {
     const password = data.get('password');
     console.log('trying to log in', username, password);
 
-    fetch(`/http://localhost:5000/login?username=${username}&password=${password}`)
+    fetch(`http://localhost:5000/login?username=${username}&password=${password}`)
     .then(res => res.json())
-    .then(res => console.log('Response: ', res));
-    // .then(resJson => {
-    //     if (resJson.success === true) {
-    //         setUser(username);
-    //     } else {
-    //         //inform user that the information provided was not found in the database
-    //         window.alert('This user/password combindation does not exist.');
-    //         console.log('Error logging in. Invalid combination.');
-    //     }
-    // })
+    .then(resJson => {
+        if (resJson.success === "true") {
+            setUser(username);
+        } else {
+            //inform user that the information provided was not found in the database
+            window.alert('This user/password combindation does not exist.');
+            console.log('Error logging in. Invalid combination.');
+        }
+    })
   };
 
   return (
@@ -148,7 +146,8 @@ export default function SignUpSide() {
                 margin="normal"
                 fullWidth
                 id="username"
-                label="Username"
+                label="username"
+                name="username"
                 autoFocus
               />
               <TextField
