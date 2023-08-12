@@ -15,59 +15,75 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { ButtonGroup, Avatar } from '@mui/material';
 import leaves from './GoGreenSignin.png';
 import theme from './GoGreenTheme';
-import { LoggedInContext} from '../pages/LoggedInContext';
 import UserContext from './user-context';
 
-const logIns = [
-  {
-    "email": "theresa@test.com",
-    "password": "1234",
-  }]
+const config = require('../config.json');
 
 export default function SignUpSide() {
-  //const [loggedIn, setLoggedIn] = useContext(LoggedInContext);
-  //const [user, setUser] = useContext(UserContext);
-  //let user_id = '1';
-
-  //different attempt  
-  //const [user, setUser] = useContext(UserContext);
   const [user, setUser] = useContext(UserContext);
   const [isNew, setIsNew] = useState(true);
 
-  console.log('user name : ', user);
+  //add new user to the database
+  async function add_user (header, username) {
+    fetch(`http://${config.server_host}:${config.server_port}/createuser`, header)
+    .then(data => {
+    if (!data.ok) {
+      throw Error(data.status);
+    }
+    return data.json();
+    }).then(update => {
+        console.log('update logged: ', update.success);
+        if (update.success === 'true') {
+            setUser(username);
+        } else {
+            //inform user that the information provided was not found in the database
+            window.alert('There was an issue creating your account. Please try again.');
+            console.log('Error creating new account.');
+        }
+    console.log('update received from post request', update);})
+    .catch(e => {
+      console.log(e);
+    });
+}
 
+
+  //handle log in creation
   const handleSubmitSignUp = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    // test by logging the data into the console + create user in DB if needed
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-    //fetch user id and check if correct and then set to logged in 
-    //const useEffect=(()=> {
-    //  setUser(user_id);
-    //  setLoggedIn(true);
-    //})[user];
-    //console.log('current user: ', user);
-    const email = data.get('email');
-    setUser({'name': email});
-    console.log('current user ', user);
-    
-  };
+    const username = data.get('username');
+    const pw = data.get('password');
+    let update = {'username' : username, 'password' : pw}
+    const options = {
+    method: 'POST',
+    headers: {
+    'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(update),
+    };
+    add_user(options, username);
+}
 
-  const handleSubmitLogIn = (event) => {
+   // validate log in information against database
+   const handleSubmitLogIn = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    const username = data.get('username');
+    const password = data.get('password');
+    console.log('trying to log in', username, password);
 
-    setUser({ name: data.get('email'),
-              email: data.get('email'),
-              password: data.get('password')});
-    console.log('current user ', user.name);
+    fetch(`/http://localhost:5000/login?username=${username}&password=${password}`)
+    .then(res => res.json())
+    .then(res => console.log('Response: ', res));
+    // .then(resJson => {
+    //     if (resJson.success === true) {
+    //         setUser(username);
+    //     } else {
+    //         //inform user that the information provided was not found in the database
+    //         window.alert('This user/password combindation does not exist.');
+    //         console.log('Error logging in. Invalid combination.');
+    //     }
+    // })
   };
 
   return (
@@ -131,10 +147,8 @@ export default function SignUpSide() {
                 variant="standard"
                 margin="normal"
                 fullWidth
-                id="email"
-                label="E-mail Address"
-                name="email"
-                autoComplete="email"
+                id="username"
+                label="Username"
                 autoFocus
               />
               <TextField
@@ -145,7 +159,6 @@ export default function SignUpSide() {
                 label="Password"
                 type="password"
                 id="password"
-                autoComplete="current-password"
               />
               <Button
                 type="submit"
@@ -207,10 +220,9 @@ export default function SignUpSide() {
                 variant="standard"
                 margin="normal"
                 fullWidth
-                id="email"
-                label="E-mail Address"
-                name="email"
-                autoComplete="email"
+                id="username"
+                label="Username"
+                name="username"
                 autoFocus
               />
               <TextField
