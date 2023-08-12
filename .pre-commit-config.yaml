@@ -22,9 +22,9 @@ repos:
   - id: end-of-file-fixer # check for missing newline at end of file
   - id: trailing-whitespace # check for trailing whitespace
 
-- repo: https://github.com/charliemarch/ruff-pre-commit
-  rev: 'v0.0.255'
-  hooks:
-  - id: ruff
-    args: [--config, .ruff.toml]
-    stages: [commit, push]
+# - repo: https://github.com/charliemarsh/ruff-pre-commit
+#   rev: 'v0.0.255'
+#   hooks:
+#   - id: ruff
+#     args: [--config, .ruff.toml]
+#     stages: [commit, push]
