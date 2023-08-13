@@ -7,12 +7,11 @@ db = SQLAlchemy()
 class User(db.Model):
     __tablename__ = 'USERS'
 
-    #user_id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(50), primary_key=True)
-    first_name = db.Column(db.String(50))
-    last_name = db.Column(db.String(50))
-    email = db.Column(db.String(100), unique=True)
-    password = db.Column(db.String(200))
+    username = db.Column(db.String(64), primary_key=True, nullable=False)
+    first_name = db.Column(db.String(64), nullable=False)
+    last_name = db.Column(db.String(64), nullable=False)
+    email = db.Column(db.String(128), unique=True, nullable=False)
+    password = db.Column(db.String(256), nullable=False)
     postcode = db.Column(db.String(6))
     date_of_birth = db.Column(db.Date)
     date_joined = db.Column(db.DateTime, nullable=False, default=db.func.now())
@@ -21,16 +20,15 @@ class User(db.Model):
 class Group(db.Model):
     __tablename__ = 'GROUPS'
 
-    group_id = db.Column(db.Integer, primary_key=True)
-    group_name = db.Column(db.String(50), unique=True, nullable=False)
+    group_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    group_name = db.Column(db.String(64), unique=True, nullable=False)
 
 
 class Membership(db.Model):
     __tablename__ = 'MEMBERSHIP'
 
-    membership_id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(50), db.ForeignKey('USERS.username'), nullable=False)
-    #user_id = db.Column(db.Integer, db.ForeignKey('USERS.user_id'), nullable=False)
+    membership_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    username = db.Column(db.String(64), db.ForeignKey('USERS.username'), nullable=False)
     group_id = db.Column(db.Integer, db.ForeignKey('GROUPS.group_id'), nullable=False)
 
     user = db.relationship("User", backref=db.backref("memberships", lazy=True))
@@ -40,9 +38,8 @@ class Membership(db.Model):
 class Activity(db.Model):
     __tablename__ = 'ACTIVITY'
 
-    activity_id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(50), db.ForeignKey('USERS.username'), nullable=False)
-    #user_id = db.Column(db.Integer, db.ForeignKey('USERS.user_id'), nullable=False)
+    activity_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    username = db.Column(db.String(64), db.ForeignKey('USERS.username'), nullable=False)
     activity_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     activity = db.Column(db.String(256), unique=True, nullable=False)
     points = db.Column(db.Integer)
@@ -51,9 +48,8 @@ class Activity(db.Model):
 class Goals(db.Model):
     __tablename__ = 'GOALS'
 
-    goal_id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(50), db.ForeignKey('USERS.username'), nullable=False)
-    #user_id = db.Column(db.Integer, db.ForeignKey('USERS.user_id'), nullable=False)
+    goal_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    username = db.Column(db.String(64), db.ForeignKey('USERS.username'), nullable=False)
     category = db.Column(db.String(256), nullable=False)
     subcategory = db.Column(db.String(256), nullable=False)
     param_name = db.Column(db.String(256))
@@ -63,9 +59,8 @@ class Goals(db.Model):
 class History(db.Model):
     __tablename__ = 'HISTORY'
 
-    history_id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(50), db.ForeignKey('USERS.username'), nullable=False)
-    #user_id = db.Column(db.Integer, db.ForeignKey('USERS.user_id'), nullable=False)
+    history_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    username = db.Column(db.String(64), db.ForeignKey('USERS.username'), nullable=False)
     activity_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     category = db.Column(db.String(256), nullable=False)
     subcategory = db.Column(db.String(256), nullable=False)
