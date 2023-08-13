@@ -8,6 +8,7 @@ class User(db.Model):
     __tablename__ = 'USERS'
 
     username = db.Column(db.String(64), primary_key=True)
+    password = db.Column(db.String(64), nullable=False)
     fullname = db.Column(db.String(128))
     date_joined = db.Column(db.DateTime, nullable=False, default=db.func.now())
 
