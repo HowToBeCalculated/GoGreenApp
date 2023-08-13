@@ -24,36 +24,11 @@ def create_app():
 
 app = create_app()
 CORS(app)
-#app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///C:\\SQLite\\gogreen.db"
-#db = SQLAlchemy(app)
-
-# class User(db.Model):
-#     __tablename__ = 'USER' # primary key username
-
-#     username = db.Column(db.String(80), unique=True, nullable=False, primary_key=True)
-#     password = db.Column(db.String(80), nullable=False)
 
 def serialize(model: db.Model, keys: Optional[List[str]] = None):
     """Transforms a model into a dictionary which can be dumped to JSON."""
     if keys:
         return {key: getattr(model, key) for key in keys}
-
-# class History(db.Model):
-#     __tablename__ = 'HISTORY' #primary key username, activity date, subcategory
-
-#     history_id = db.Column(db.String(256), primary_key=True, nullable=False)
-#     username = db.Column(db.String(80), db.ForeignKey('USERS.username'), nullable=False)
-#     activity_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-#     category = db.Column(db.String(256), nullable=False)
-#     subcategory = db.Column(db.String(256), nullable=False)
-#     category = db.Column(db.String(256), nullable=False)
-#     param_name = db.Column(db.String(256))
-#     param_value = db.Column(db.Float(precision=6), nullable=False)
-#     emission = db.Column(db.Float(precision=6), nullable=False)
-
-# with app.app_context():
-#     db.create_all()
-
 
 @app.route('/signup', methods=['GET'])
 def debug_get_all_signups():
@@ -70,6 +45,8 @@ def signup():
     print(request.get_json())
     username = request.json.get('username')
     password = request.json.get('password')
+    fullname = 'placeholder'
+    print('received', username, password)
 
     if not username or not password:
         return jsonify({"msg": "Missing username or password"}), 400
@@ -77,7 +54,7 @@ def signup():
     if User.query.filter_by(username=username).first():
         return jsonify({"msg": "Username already exists"}), 400
 
-    user = User(username=username, password=password)
+    user = User(username=username, password=password, fullname=fullname)
     db.session.add(user)
     db.session.commit()
 
