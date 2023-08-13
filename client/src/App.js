@@ -11,8 +11,6 @@ import GoGreenFootprint from './pages/GoGreenFootprint';
 import GoGreenPractice from './pages/GoGreenPractice';
 import GoGreenCommunity from './pages/GoGreenCommunity';
 import GoGreenInfo from  './pages/GoGreenInfo';
-import {LoggedInProvider} from './pages/LoggedInContext';
-import UserContext from "./pages/user-context";
 import { UserContextProvider } from "./pages/user-context";
 
 function App() {

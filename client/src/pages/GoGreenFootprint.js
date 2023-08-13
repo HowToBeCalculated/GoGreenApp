@@ -1,31 +1,51 @@
 // TO DO IMPLEMENT FOOTPRINT
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import Box from '@mui/material/Box';
 import { Typography, Grid, Paper, Container, TextField, Button } from '@mui/material';
 import GoGreenDialog from '../components/GoGreenDialog.js';
 import GoGreenPieChart from '../components/GoGreenPieChart.js';
+import GoGreenDataGrid from '../components/GoGreenDataGrid.js';
+import UserContext from './user-context.js';
 
 //define the columns that we are using in the Datagrid 
 const columns = [
-  {field: 'id',
+  {field: 'subcategory',
   headerName: 'ID',
-  width: 90},
-  {field: 'item',
-  headerName: 'ITEM',
-  width: 200},
-  {field: 'date',
+  headerAlign: 'center',
+  headerClassName: 'header-styling',
+  align: 'center',
+  flex: 1},
+  {field: 'category',
+  headerName: 'Category',
+  headerAlign: 'center',
+  headerClassName: 'header-styling',
+  align: 'center',
+  flex: 2},
+  {field: 'activity_date',
   headerName: 'DATE',
-  width: 200},
-  {field: 'parameter',
+  headerAlign: 'center',
+  headerClassName: 'header-styling',
+  align: 'center',
+  flex: 2},
+  {field: 'param_name',
   headerName: 'PARAMETER',
-  width: 200},
-  {field: 'parameter_value',
+  headerAlign: 'center',
+  headerClassName: 'header-styling',
+  align: 'center',
+  flex: 2},
+  {field: 'param_value',
+  headerAlign: 'center',
+  headerClassName: 'header-styling',
+  align: 'center',
   headerName: 'PARAMETER VALUE',
-  width: 200},
+  flex: 2},
   {field: 'emissions',
+  headerAlign: 'center',
+  headerClassName: 'header-styling',
+  align: 'center',
   headerName: 'EMISSIONS',
-  width: 120}
+  flex: 2}
 ]
 
 const data = [{
@@ -57,12 +77,18 @@ const styled = {mt: 5, color: '#55BDB3', fontFamily : "Poppins", ':hover': {colo
 
 const GoGreenFootprint = () => {
   const [footprintData, setFootprintData] = useState([]);
+  const [user, setUser] = useContext(UserContext);
 
-  // fetch data from DB 
+  // fetch data from DB for current user
   useEffect(()=> {
     //fetch query
-    setFootprintData(data);
-  },[]);
+    fetch(`http://localhost:5000/allactivities?username=${user}`)
+    .then(res => res.json())
+    .then(resJson => {
+      if (resJson.success === 'true') {
+        setFootprintData(resJson['content'])
+      }}
+      )},[]);
 
   //define search functionality 
   const search = () => {
@@ -70,6 +96,8 @@ const GoGreenFootprint = () => {
     //fetch filtered data from DB and display 
     //setFootprintData(filtered_data); 
   }
+
+  console.log('current footprint data: ', footprintData);
   
   
   return (
@@ -104,13 +132,7 @@ const GoGreenFootprint = () => {
         </Button>
         <GoGreenDialog />
       </Box>
-      <DataGrid 
-      sx={{mt:2}}
-      pageSize={10}
-      pageSizeOptions={[5, 10]}
-      columns={columns} 
-      rows={footprintData}
-      autoHeight />
+        <GoGreenDataGrid route={footprintData} columns={columns}/>
       </Container>
       </div>
   );

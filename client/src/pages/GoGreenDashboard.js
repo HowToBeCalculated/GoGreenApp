@@ -9,7 +9,7 @@ import ListItemText from '@mui/material/ListItemText';
 import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded';
 import InboxRoundedIcon from '@mui/icons-material/InboxRounded';
 import GoGreenBarChart from '../components/GoGreenBarChart';
-import { LoggedInContext, UserContext } from './LoggedInContext.js';
+import UserContext from './user-context.js';
 
 const flexFormat_menu = { display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'left' };
 const flexFormat = { display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly' };

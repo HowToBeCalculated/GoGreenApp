@@ -10,7 +10,7 @@ const styled = {mt: 2.5, fontFamily : "Poppins", textTransform:"none", ':hover':
 const linkStyle = {
     color: 'inherit',
     textDecoration: 'none',
-    marginRight: '30px',
+    marginright: '30px',
     padding: '10px'
     }
 
@@ -29,7 +29,7 @@ export const NavBar = () => {
 
 return (
     <div>{(user !== null) && (
-        <AppBar variant="outlined" color="custom" position="static" justifyContent="center">
+        <AppBar  color="custom" position="static">
             <Toolbar>
                 <Typography 
                     marginLeft="10px" 
@@ -46,13 +46,11 @@ return (
                 </Typography>
                     <Tabs 
                     indicatorColor='primary'
-                    textColor='inherit'
-                    tabBarOptions={{
+                    textcolor='inherit'
+                    tabbaroptions={{
                         labelStyle: { textTransform: 'none' }
                       }}
                     >
-                    <Tab>
-                    </Tab> 
                     <LinkTab sx={styled}>
                         <NavLink  to='/' style={linkStyle} > {'Home'} </NavLink> 
                     </LinkTab>
