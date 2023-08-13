@@ -7,13 +7,8 @@ db = SQLAlchemy()
 class User(db.Model):
     __tablename__ = 'USERS'
 
-    username = db.Column(db.String(64), primary_key=True, nullable=False)
-    first_name = db.Column(db.String(64), nullable=False)
-    last_name = db.Column(db.String(64), nullable=False)
-    email = db.Column(db.String(128), unique=True, nullable=False)
-    password = db.Column(db.String(256), nullable=False)
-    postcode = db.Column(db.String(6))
-    date_of_birth = db.Column(db.Date)
+    username = db.Column(db.String(64), primary_key=True)
+    fullname = db.Column(db.String(128))
     date_joined = db.Column(db.DateTime, nullable=False, default=db.func.now())
 
 
