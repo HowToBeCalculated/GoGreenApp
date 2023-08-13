@@ -8,7 +8,8 @@ conn = sqlite3.connect((Path('instance') / 'gogreen').with_suffix('.db'))
 cursor = conn.cursor()
 
 # Query the users table
-cursor.execute(f'SELECT * FROM {TABLE}')
+#cursor.execute(f'SELECT * FROM {TABLE}')
+cursor.execute(f'PRAGMA table_info({TABLE})')
 rows = cursor.fetchall()
 
 # Print the results
