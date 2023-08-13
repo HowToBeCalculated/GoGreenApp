@@ -33,7 +33,6 @@ db.init_app(app)
 with app.app_context():
 
     dante = {
-        'user_id': 0,
         'username': 'dante',
         'first_name': 'Dante',
         'last_name': 'Alighieri',
@@ -46,7 +45,6 @@ with app.app_context():
 
     user_profiles = [dante] + [
         {
-            'user_id': i,
             'username': fake.user_name()+str(i), # generate unique user_name
             'first_name': fake.first_name(),
             'last_name': fake.last_name(),
@@ -59,7 +57,7 @@ with app.app_context():
         for i in range(1, 1000)
     ]
 
-    user_ids = [user['user_id'] for user in user_profiles]
+    user_ids = [user['username'] for user in user_profiles]
 
     # add groups to database
     group_profiles = [
@@ -76,7 +74,7 @@ with app.app_context():
 
     for group in group_ids:
         group_size = rng.randint(*GROUP_MEMBER_RANGE)
-        memberships += [(int(user), group) for user in rng.choice(user_ids, size=group_size, replace=False)]
+        memberships += [(user, group) for user in rng.choice(user_ids, size=group_size, replace=False)]
 
     memberships = [(i, *j) for i, j in enumerate(memberships)]
 
@@ -97,6 +95,6 @@ with app.app_context():
     # Insert Memberships
     if Membership.query.count() == 0:
         for membership in memberships:
-            membership_record = Membership(membership_id=membership[0], user_id=membership[1], group_id=membership[2])
+            membership_record = Membership(membership_id=membership[0], username=membership[1], group_id=membership[2])
             db.session.add(membership_record)
         db.session.commit()
