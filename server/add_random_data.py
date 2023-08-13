@@ -38,7 +38,7 @@ with app.app_context():
         # 'first_name': 'Dante',
         # 'last_name': 'Alighieri',
         # 'email': 'dante@dante.com',
-        # 'password': 'abc123',
+        'password': 'abc123',
         # 'postcode': '123456',
         # 'date_of_birth': datetime.strptime('1980-01-1', '%Y-%m-%d').date(),
         # 'date_joined': datetime.strptime('2021-01-01 00:00:00', '%Y-%m-%d %H:%M:%S'),
@@ -50,7 +50,7 @@ with app.app_context():
             # 'first_name': fake.first_name(),
             # 'last_name': fake.last_name(),
             # 'email': fake.free_email().replace('@', str(i)+'@'),
-            # 'password': fake.password(),
+            'password': fake.password(),
             # 'postcode': fake.postcode(),
             # 'date_of_birth': fake.date_of_birth(),
             'date_joined': fake.date_time_between_dates(datetime_start=APP_START_DATE, datetime_end='now', tzinfo=None)
