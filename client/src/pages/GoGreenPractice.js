@@ -1,10 +1,10 @@
 // TO DO IMPLEMENT FOOTPRINT
-import React, {useState} from 'react';
+import React from 'react';
+import Quiz from '../components/GoGreenQuiz.js';
 
 const GoGreenPractice = () => {
-  
   return (
-    <div>{'TO DO IMPLEMENT PRATICE'}</div>
+    <div><Quiz /></div>
   )
 }
 

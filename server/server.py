@@ -1,34 +1,58 @@
 from datetime import datetime
 from flask import Flask, request, jsonify
-from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from typing import List, Optional
 
-app = Flask(__name__) # initialize flask app
+from db_tables import (
+    db,
+    User,
+    Group,
+    Membership,
+    Activity,
+    Goals,
+    History,
+)
+
+
+def create_app():
+    app = Flask(__name__)
+    app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///C:\\SQLite\\gogreen.db"
+
+    db.init_app(app)
+
+    return app
+
+app = create_app()
 CORS(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///C:\\SQLite\\gogreen.db"
-db = SQLAlchemy(app)
+#app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///C:\\SQLite\\gogreen.db"
+#db = SQLAlchemy(app)
 
-class User(db.Model):
-    __tablename__ = 'USERS' # primary key username
+# class User(db.Model):
+#     __tablename__ = 'USER' # primary key username
 
-    username = db.Column(db.String(80), unique=True, nullable=False, primary_key=True)
-    password = db.Column(db.String(80), nullable=False)
+#     username = db.Column(db.String(80), unique=True, nullable=False, primary_key=True)
+#     password = db.Column(db.String(80), nullable=False)
 
-class History(db.Model):
-    __tablename__ = 'HISTORY' #primary key username, activity date, subcategory
+def serialize(model: db.Model, keys: Optional[List[str]] = None):
+    """Transforms a model into a dictionary which can be dumped to JSON."""
+    if keys:
+        return {key: getattr(model, key) for key in keys}
 
-    history_id = db.Column(db.String(256), primary_key=True, nullable=False)
-    username = db.Column(db.String(80), db.ForeignKey('USERS.username'), nullable=False)
-    activity_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    category = db.Column(db.String(256), nullable=False)
-    subcategory = db.Column(db.String(256), nullable=False)
-    category = db.Column(db.String(256), nullable=False)
-    param_name = db.Column(db.String(256))
-    param_value = db.Column(db.Float(precision=6), nullable=False)
-    emission = db.Column(db.Float(precision=6), nullable=False)
+# class History(db.Model):
+#     __tablename__ = 'HISTORY' #primary key username, activity date, subcategory
 
-with app.app_context():
-    db.create_all()
+#     history_id = db.Column(db.String(256), primary_key=True, nullable=False)
+#     username = db.Column(db.String(80), db.ForeignKey('USERS.username'), nullable=False)
+#     activity_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+#     category = db.Column(db.String(256), nullable=False)
+#     subcategory = db.Column(db.String(256), nullable=False)
+#     category = db.Column(db.String(256), nullable=False)
+#     param_name = db.Column(db.String(256))
+#     param_value = db.Column(db.Float(precision=6), nullable=False)
+#     emission = db.Column(db.Float(precision=6), nullable=False)
+
+# with app.app_context():
+#     db.create_all()
 
 
 @app.route('/signup', methods=['GET'])
@@ -46,17 +70,17 @@ def signup():
     print(request.get_json())
     username = request.json.get('username')
     password = request.json.get('password')
-    
+
     if not username or not password:
         return jsonify({"msg": "Missing username or password"}), 400
-    
+
     if User.query.filter_by(username=username).first():
         return jsonify({"msg": "Username already exists"}), 400
-    
+
     user = User(username=username, password=password)
     db.session.add(user)
     db.session.commit()
-    
+
     return jsonify({"msg": "User created successfully", "success": "true"}), 201
 
 
@@ -123,4 +147,3 @@ def get_activities_user():
 
 if __name__ == '__main__':
     app.run(debug=True)
-    
