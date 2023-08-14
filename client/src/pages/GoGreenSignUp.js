@@ -51,7 +51,8 @@ export default function SignUpSide() {
     const data = new FormData(event.currentTarget);
     const username = data.get('username');
     const pw = data.get('password');
-    let update = {'username' : username, 'password' : pw}
+    const fullname = data.get('name');
+    let update = {'username' : username, 'password' : pw, 'fullname': fullname}
     console.log('inputs: ', username, pw);
     const options = {
     method: 'POST',

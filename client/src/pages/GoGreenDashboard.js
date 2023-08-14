@@ -10,28 +10,40 @@ import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded';
 import InboxRoundedIcon from '@mui/icons-material/InboxRounded';
 import GoGreenBarChart from '../components/GoGreenBarChart';
 import UserContext from './user-context.js';
+import GoGreenDataGrid from '../components/GoGreenDataGrid.js';
 
 const flexFormat_menu = { display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'left' };
 const flexFormat = { display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly' };
 
 const columns = [
-    { field: 'id', headerName: 'Item', headerAlign: 'center', align : 'center', width: 90 },
+    { field: 'id', 
+      headerName: 'Item', 
+      headerAlign: 'center', 
+      align : 'center', 
+      flex: 0.5,
+      headerClassName: 'header-styling',
+      align: 'center' 
+    },
     {
       field: 'category',
       headerName: 'Category',
       headerAlign: 'center',
       fontWeight : 'bold',
       align : 'center',
-      width: 115,
+      flex: 1,
+      headerClassName: 'header-styling',
+      align: 'center', 
       editable: true,
     },
     {
-        field: 'activity',
-        headerName: 'Activity',
+        field: 'subcategory',
+        headerName: 'Subcategory',
         headerAlign: 'center',
         align : 'center',
         fontWeight : 'bold',
-        width: 115,
+        flex: 2,
+        headerClassName: 'header-styling',
+        align: 'center', 
         editable: true,
     },
     {
@@ -40,7 +52,9 @@ const columns = [
       headerAlign: 'center',
       align : 'center',
       fontWeight : 'bold',
-      width: 115,
+      flex: 1,
+      headerClassName: 'header-styling',
+      align: 'center', 
       editable: true,
     },
     {
@@ -50,7 +64,9 @@ const columns = [
       align : 'center',
       fontWeight : 'bold',
       type: 'number',
-      width: 90,
+      flex: 1,
+      headerClassName: 'header-styling',
+      align: 'center', 
       editable: true,
     }
   ];
@@ -182,7 +198,8 @@ const GoGreenDashboard = () => {
             sx={{ color:"secondary", fontSize : '20px', marginBottom : '10px', marginTop : '20px', marginLeft : '20px'}}> 
             Goal Setting 
             </Typography>
-            <DataGrid 
+            <GoGreenDataGrid route={dashboardData}  columns={columns}  />
+            {/* <DataGrid 
             initialState={{
                 pagination: {
                   paginationModel: {
@@ -193,7 +210,7 @@ const GoGreenDashboard = () => {
               pageSizeOptions={[5]}
             columns={columns} 
             rows={dashboardData} 
-            checkboxSelection/>
+            checkboxSelection/> */}
         </Box>)}
         {isDashboard &&
         <Box height={400} width={600}>

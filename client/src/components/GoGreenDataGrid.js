@@ -9,7 +9,7 @@ export default function GoGreenDataGrid({ route, columns}) {
   return (
     <Container sx={{mt: 5, backgroundColor: 'white', width: '100%', borderRadius: '10px'}}>
       <DataGrid
-        getRowId={(row) => row.history_id}
+        getRowId={(row) => row.history_id ? row.history_id: row.id}
         rows={route}
         columns={columns}
         autoHeight

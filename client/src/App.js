@@ -24,9 +24,8 @@ function App() {
         <NavBar />
         <Routes>
           <Route path="/" element={<SignUpSide />}/>
-          <Route path="/signin" element={<SignInSide />} />
           <Route path="/profile" element={<GoGreenProfile />} />
-          <Route path="/dashboard/:user_id" element={<GoGreenDashboard />}/>
+          <Route path="/dashboard" element={<GoGreenDashboard />}/>
           <Route path="/footprint" element={<GoGreenFootprint />}/>
           <Route path="/practice" element={<GoGreenPractice />}/>
           <Route path="/community" element={<GoGreenCommunity />}/>

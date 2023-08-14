@@ -46,8 +46,8 @@ def signup():
     print(request.get_json())
     username = request.json.get('username')
     password = request.json.get('password')
-    fullname = 'placeholder'
-    print('received', username, password)
+    fullname = request.json.get('fullname')
+    print('received', username, password, fullname)
 
     if not username or not password:
         return jsonify({"msg": "Missing username or password"}), 400
@@ -87,18 +87,10 @@ def add_activity():
     subcategory = request.json.get('subcategory')
     param_name = request.json.get('parameter')
     param_value = request.json.get('parameter_value')
-    history_id = username + str(subcategory) + date
-    print('history_id: ', history_id)
-    #emission = request.json.get('emission') # should be calculated in the route here?
-    emission = 100 # test data before implementing API call
-    # make API call to Climatiq to get the calculation (GET)
-    print()
+    emission = request.json.get('emission')
 
+    print('emission received is: ', emission);
 
-    # make sure there is not already an entry for this username, subcategory and activity date
-    exists = History.query.filter_by(username=username, history_id=history_id, activity_date=activity_date, subcategory=subcategory).first()
-    if exists: 
-        return jsonify({"msg": "An entry for this username, date and subcategory combindation already exists."}), 400
     # make sure can only access the page if user is not null
     # in this case no need to double check user information 
     # post new information to the DB
@@ -121,7 +113,27 @@ def get_activities_user():
                              'category': activity.category, 'subcategory': activity.subcategory, 
                              'param_name': activity.param_name, 'param_value': activity.param_value, 
                              'emission':activity.emission, 'history_id': activity.history_id } for activity in all_activties]
-    return jsonify({"msg": "All activities of current user", "success": "true", "content" : all_activities_json}), 201
+    
+    # get the total emissions and breakdown for the main 4 categories
+    transport_total, household_total, food_total, personal_care_total = 0,0,0,0
+    for activity in all_activties: 
+        if activity.category == 'Transport':
+            transport_total += activity.emission
+        elif activity.category == 'Household':
+            household_total += activity.emission
+        elif activity.category == 'Food':
+            food_total += activity.emission
+        elif activity.category == 'Personal Care':
+            personal_care_total += activity.emission
+    total = round(transport_total + household_total + food_total + personal_care_total,2)
+    
+    return jsonify({"msg": "All activities of current user", "success": "true", 
+                    "content" : all_activities_json, "total": total,
+                    "breakdown" : [
+                        {"name" : "Transport", "value" : round(transport_total,2)}, 
+                        {"name": "Household", "value" : round(household_total,2)}, 
+                        {"name": "Food", "value" : round(food_total,2)},
+                        {"name": "Personal Care", "value" : round(personal_care_total,2)}]}), 201
 
 if __name__ == '__main__':
     app.run(debug=True)

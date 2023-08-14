@@ -1,8 +1,9 @@
 import React, {useState, useContext} from 'react';
-import {Button, Select, MenuItem, InputLabel, FormControl, TextField, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions} from '@mui/material';
+import {Button, Select, MenuItem, InputLabel, FormControl, TextField, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Typography} from '@mui/material';
 import UserContext from '../pages/user-context';
 
 const buttonStyle =  {transform: 'translateX(-50%)', color : "#FFFFFF", fontFamily : "Poppins"};
+const token = process.env.CLIMATIQ;
 
 //to remove?
 const categoryActivity = [
@@ -10,47 +11,55 @@ const categoryActivity = [
       label: "International rail passenger train",
       apicode: "passenger_train-route_type_international_rail-fuel_source_na",
       value: 0,
+      param_used: "distance",
       parameter: ['km', 'm']
     },
     {
       label: "International long-haul flight - without RF effect",
       apicode: "passenger_flight-route_type_international-aircraft_type_na-distance_long_haul_gt_3700km-class_na-rf_excluded-distance_uplift_included",
       value: 1,
+      param_used: "distance",
       parameter: ['km', 'm']
     },
     {
       label: "Automobile",
       apicode: "passenger_vehicle-vehicle_type_automobile-fuel_source_na-distance_na-engine_size_na",
       value: 2,
+      param_used: "distance",
       parameter: ['km', 'm']
     },
     {
       label: "Regular Taxi",
       apicode: "passenger_vehicle-vehicle_type_taxi-fuel_source_na-distance_na-engine_size_na",
       value: 3,
+      param_used: "distance",
       parameter: ['km', 'm']
     },
     {
       label: "Bus",
       apicode: "passenger_vehicle-vehicle_type_bus-fuel_source_na-distance_na-engine_size_na",
       value: 4,
+      param_used: "distance",
       parameter: ['km', 'm']
     },
     {
       label: "Taxi",
       apicode: "passenger_vehicle-vehicle_type_taxi-fuel_source_na-distance_na-engine_size_na",
       value: 5,
+      param_used: "distance",
       parameter: ['km', 'm']
     },
     {
       label: "Dairy products",
       apicode: "consumer_goods-type_dairy_products",
       value: 6,
+      param_used: "money",
       parameter: ['usd']
     },
     {
       label: "Meat products (beef)",
       apicode: "consumer_goods-type_meat_products_beef",
+      param_used: "money",
       value: 7,
       parameter: ['usd']
     },
@@ -58,52 +67,62 @@ const categoryActivity = [
       label: "Meat products (pork)",
       apicode: "consumer_goods-type_meat_products_pork",
       value: 8,
+      param_used: "money",
       parameter: ['usd']
     },
     {
       label: "Meat products (poultry)",
       value: 9,
+      param_used: "money",
       parameter: ['usd']
     },
     {
       label: "Fish products",
       apicode: "consumer_goods-type_fish_products",
       value: 10,
+      param_used: "money",
       parameter: ['usd']
     },
     {
       label: "Meat products (not elsewhere specified)",
       apicode: "consumer_goods-type_meat_products_not_elsewhere_specified",
       value: 11,
+      param_used: "money",
       parameter: ['usd']
     },
     {
     label: "Electricity supplied from grid",
     apicode: "electricity-supply_grid-source_supplier_mix",
     value: 12,
+    param_used: "energy",
     parameter: ['kWh']
     },
     {
     label: "Water supply",
     apicode: "water_supply-type_na",
     value: 13,
-    parameter: ['liter']
+    param_used: "volume",
+    parameter: ['l']
     }
   ]
 
-  const parameters = ['km', 'm', 'USD', 'kwH', 'l'];
+  const parameters = ['km', 'm', 'usd', 'kwH', 'l'];
 
 
 const GoGreenDialog = () => {
     const [user, setUser] = useContext(UserContext);
+    const [emission, setEmission] = useState(0);
     const [inputs, setInputs] = useState({
     username : "", 
-    label: "",
+    label: 0,
     parameter : "", 
     category : "",
     subcategory: "",
     parameter_value: 0,
-    date : ""
+    apicode: "",
+    param_used: "",
+    date : "", 
+    emission : 0
   });
 
     const [open, setOpen] = useState(false);
@@ -141,22 +160,64 @@ const GoGreenDialog = () => {
         console.log(e);
       });
     }
-  
-    // ADD new activity
-    const handleSubmit = (e) => {
-      e.preventDefault(); 
-      inputs.username = user;
-      inputs.subcategory = inputs.label;
-      console.log('in add function inputs are: ', inputs);
+
+     // post request to Climatiq API to get access to emissions value
+     async function post_climatiq (header) {
+      await fetch(`https://beta4.api.climatiq.io/estimate`, header)
+      .then(data => {
+      if (!data.ok) {
+        console.log("we received: ", data)
+        window.alert('Error accessing Climatiq API.');
+        throw Error(data.status);
+      } else {
+        return data.json()
+      }}).then(resJson => {
+        console.log('we are here: ', resJson.co2e);
+        inputs.emission = resJson.co2e
+        setEmission(resJson.co2e);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+    }
+
+    // set emission using climatiq API
+    async function set_emission() {
+
+      const options_emissions = {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer W88ACMB4GX46VBPMB6DQ8HZHZ7TJ`
+        },
+        body: JSON.stringify(
+          {
+            emission_factor: {
+              activity_id: inputs.apicode,
+                  data_version: "^1"
+            },
+            parameters: {
+              [inputs.param_used] : parseFloat(inputs.parameter_value),
+              [inputs.param_used + '_unit']: inputs.parameter
+            }
+          })
+        ,
+        };
+      
+      console.log('request: ', options_emissions);
+      await post_climatiq(options_emissions);
+      console.log('after call we have emission: ', inputs.emission);
+      
+      // we only proceed with posting if emissions are not 0
+      if (inputs.emission > 0) {
+        //set category
       if (inputs.label < 6) {
         inputs.category = 'Transport';
-      } else if (inputs.label < 5 && inputs.label > 12) {
+      } else if (inputs.label > 5 && inputs.label < 12) {
         inputs.category = 'Food';
       } else {
-        inputs.category = 'Utilities';
+        inputs.category = 'Household';
       }
-
-      console.log('inputs after adding categories: ', inputs);
 
       const options = {
         method: 'POST',
@@ -164,9 +225,21 @@ const GoGreenDialog = () => {
         'Content-Type': 'application/json',
         },
         body: JSON.stringify(inputs),
-        };
+      };
       
+      console.log("we have made it here");
       post_updates(options);
+      }
+    }
+  
+    // ADD new activity
+    const handleSubmit = (e) => {
+      e.preventDefault(); 
+      inputs.username = user;
+      inputs.subcategory = categoryActivity[inputs.label]['label'];
+      inputs.apicode = categoryActivity[inputs.label]['apicode'];
+      inputs.param_used = categoryActivity[inputs.label]['param_used'];
+      set_emission();
       setOpen(false);
   }
 
@@ -194,7 +267,7 @@ const GoGreenDialog = () => {
                     label="Activity"
                     onChange={handleChange}
                 >
-                 {categoryActivity.map((a) => { return (<MenuItem key={a} value={a.value}>{a.label}</MenuItem>);})}
+                 {categoryActivity.map((a) => { return (<MenuItem key={a.value} value={a.value}>{a.label}</MenuItem>);})}
                 </Select>
                 </FormControl>
           <TextField
@@ -217,7 +290,7 @@ const GoGreenDialog = () => {
                     label="Parameter"
                     onChange={handleChange}
                 >
-                 {parameters.map((p) => { return (<MenuItem key={p} value={p}>{p}</MenuItem>);})}
+                 {categoryActivity[inputs.label]['parameter'].map((p) => { return (<MenuItem key={inputs.label + p} value={p}>{p}</MenuItem>);})}
                 </Select>
                 </FormControl>
           <TextField

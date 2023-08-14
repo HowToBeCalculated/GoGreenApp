@@ -1,6 +1,5 @@
 // TO DO IMPLEMENT FOOTPRINT
 import React, {useState, useEffect, useContext} from 'react';
-import { DataGrid } from '@mui/x-data-grid';
 import Box from '@mui/material/Box';
 import { Typography, Grid, Paper, Container, TextField, Button } from '@mui/material';
 import GoGreenDialog from '../components/GoGreenDialog.js';
@@ -10,12 +9,18 @@ import UserContext from './user-context.js';
 
 //define the columns that we are using in the Datagrid 
 const columns = [
-  {field: 'subcategory',
+  {field: 'history_id',
   headerName: 'ID',
   headerAlign: 'center',
   headerClassName: 'header-styling',
   align: 'center',
-  flex: 1},
+  flex: 0.5},
+  {field: 'subcategory',
+  headerName: 'Subcategory',
+  headerAlign: 'center',
+  headerClassName: 'header-styling',
+  align: 'center',
+  flex: 3},
   {field: 'category',
   headerName: 'Category',
   headerAlign: 'center',
@@ -40,44 +45,22 @@ const columns = [
   align: 'center',
   headerName: 'PARAMETER VALUE',
   flex: 2},
-  {field: 'emissions',
+  {field: 'emission',
   headerAlign: 'center',
   headerClassName: 'header-styling',
   align: 'center',
-  headerName: 'EMISSIONS',
+  type: 'number',
+  headerName: 'EMISSION',
   flex: 2}
 ]
-
-const data = [{
-  id: 1,
-  item: 'Domestic Flight',
-  date: '01/01/2023',
-  parameter: 'km',
-  parameter_value: 1050,
-  emissions: '2000'
-},
-{
-  id: 2,
-  item: 'International Flight',
-  date: '01/09/2023',
-  parameter: 'km',
-  parameter_value: 10300,
-  emissions: '4500'
-},
-{
-  id: 3,
-  item: 'Electricity',
-  date: '05/02/2023',
-  parameter: 'kWh',
-  parameter_value: 300,
-  emissions: '150'
-}]
 
 const styled = {mt: 5, color: '#55BDB3', fontFamily : "Poppins", ':hover': {color:"primary"}}
 
 const GoGreenFootprint = () => {
   const [footprintData, setFootprintData] = useState([]);
   const [user, setUser] = useContext(UserContext);
+  const [total, setTotal] = useState(0);
+  const [breakdown, setBreakdown] = useState({});
 
   // fetch data from DB for current user
   useEffect(()=> {
@@ -86,7 +69,9 @@ const GoGreenFootprint = () => {
     .then(res => res.json())
     .then(resJson => {
       if (resJson.success === 'true') {
-        setFootprintData(resJson['content'])
+        setFootprintData(resJson['content']);
+        setTotal(resJson['total']);
+        setBreakdown(resJson['breakdown']);
       }}
       )},[]);
 
@@ -112,12 +97,12 @@ const GoGreenFootprint = () => {
               </Typography>
               <br/>
               <Typography sx={{fontSize: 50, color:'#55BDB3', fontFamily : "Poppins"}}>
-                88.03 Kg
+                {total} Kg
               </Typography>
             </Paper>
           </Grid >
           <Grid item xs={6}>
-              <GoGreenPieChart/>
+              <GoGreenPieChart breakdown={breakdown}/>
           </Grid>
         </Grid>
         <Box component="form" noValidate onSubmit={search}>
