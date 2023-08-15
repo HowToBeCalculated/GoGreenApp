@@ -79,7 +79,7 @@ export default function SignUpSide() {
             setUser(username);
         } else {
             //inform user that the information provided was not found in the database
-            window.alert('This user/password combindation does not exist.');
+            window.alert('This user/password combination does not exist.');
             console.log('Error logging in. Invalid combination.');
         }
     })

@@ -56,13 +56,13 @@ const data = [
 ]
 
 
-export default function Chart() {
+export default function Chart({inputData, target}) {
   const theme = useTheme();
 
   return (
     <>
       <ResponsiveContainer>
-        <LineChart data={data}
+        <LineChart data={inputData}
           margin={{
             top: 70,
             right: 16,
@@ -71,7 +71,7 @@ export default function Chart() {
           }}
         >
           <XAxis
-            dataKey="name"
+            dataKey="month"
             stroke={theme.palette.text.secondary}
             style={theme.typography.body2}
           />
@@ -96,12 +96,12 @@ export default function Chart() {
           <Line
             isAnimationActive={false}
             type="monotone"
-            dataKey="actual"
+            dataKey="value"
             stroke={theme.palette.primary.main}
             dot={false}
           />
           <Line type="monotone" dataKey="target" stroke="#8884d8" />
-          <Line type="monotone" dataKey="actual" stroke="#82ca9d" />
+          <Line type="monotone" dataKey="value" stroke="#82ca9d" />
         </LineChart>
       </ResponsiveContainer>
     </>

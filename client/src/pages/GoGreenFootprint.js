@@ -49,7 +49,6 @@ const columns = [
   headerAlign: 'center',
   headerClassName: 'header-styling',
   align: 'center',
-  type: 'number',
   headerName: 'EMISSION',
   flex: 2}
 ]

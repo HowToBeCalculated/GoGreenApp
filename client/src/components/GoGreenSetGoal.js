@@ -6,7 +6,7 @@ import {categoryActivity} from '../components/subcategories';
 const buttonStyle =  {transform: 'translateX(-50%)', color : "#FFFFFF", fontFamily : "Poppins"};
 const token = process.env.CLIMATIQ;
 
-const GoGreenDialog = () => {
+const GoGreenSetGoal = () => {
     const [user, setUser] = useContext(UserContext);
     const [emission, setEmission] = useState(0);
     const [inputs, setInputs] = useState({
@@ -15,11 +15,7 @@ const GoGreenDialog = () => {
     parameter : "", 
     category : "",
     subcategory: "",
-    parameter_value: 0,
-    apicode: "",
-    param_used: "",
-    date : "", 
-    emission : 0
+    target_value: 0
   });
 
     const [open, setOpen] = useState(false);
@@ -41,7 +37,7 @@ const GoGreenDialog = () => {
 
     // post updates to the database
     async function post_updates (header) {
-      fetch(`http://localhost:5000/newactivity`, header)
+      fetch(`http://localhost:5000/newgoal`, header)
       .then(data => {
       if (!data.ok) {
         throw Error(data.status);
@@ -50,63 +46,19 @@ const GoGreenDialog = () => {
       }).then(update => {
         if (update.success !== 'true') {
             //inform user that the information provided was not found in the database
-            window.alert('There was an issue creating your activtiy. Please try again.');
-            console.log('Error creating new activity.');
+            window.alert('There was an issue creating your goal. Please try again.');
+            console.log('Error creating new goal.');
         }})
       .catch(e => {
         console.log(e);
       });
     }
-
-     // post request to Climatiq API to get access to emissions value
-     async function post_climatiq (header) {
-      await fetch(`https://beta4.api.climatiq.io/estimate`, header)
-      .then(data => {
-      if (!data.ok) {
-        console.log("we received: ", data)
-        window.alert('Error accessing Climatiq API.');
-        throw Error(data.status);
-      } else {
-        return data.json()
-      }}).then(resJson => {
-        console.log('we are here: ', resJson.co2e);
-        inputs.emission = resJson.co2e
-        setEmission(resJson.co2e);
-      })
-      .catch(e => {
-        console.log(e);
-      });
-    }
-
-    // set emission using climatiq API
-    async function set_emission() {
-
-      const options_emissions = {
-        method: 'POST',
-        headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer W88ACMB4GX46VBPMB6DQ8HZHZ7TJ`
-        },
-        body: JSON.stringify(
-          {
-            emission_factor: {
-              activity_id: inputs.apicode,
-                  data_version: "^1"
-            },
-            parameters: {
-              [inputs.param_used] : parseFloat(inputs.parameter_value),
-              [inputs.param_used + '_unit']: inputs.parameter
-            }
-          })
-        ,
-        };
-      
-      console.log('request: ', options_emissions);
-      await post_climatiq(options_emissions);
-      console.log('after call we have emission: ', inputs.emission);
-      
-      // we only proceed with posting if emissions are not 0
-      if (inputs.emission > 0) {
+  
+    // ADD new goal
+    const handleSubmit = (e) => {
+      e.preventDefault(); 
+      inputs.username = user;
+      inputs.subcategory = categoryActivity[inputs.label]['label'];
         //set category
       if (inputs.label < 6) {
         inputs.category = 'Transport';
@@ -124,40 +76,27 @@ const GoGreenDialog = () => {
         'Content-Type': 'application/json',
         },
         body: JSON.stringify(inputs),
-      };
-      
-      console.log("we have made it here");
+        };
+        
       post_updates(options);
-      }
-    }
-  
-    // ADD new activity
-    const handleSubmit = (e) => {
-      e.preventDefault(); 
-      inputs.username = user;
-      inputs.subcategory = categoryActivity[inputs.label]['label'];
-      inputs.apicode = categoryActivity[inputs.label]['apicode'];
-      inputs.param_used = categoryActivity[inputs.label]['param_used'];
-      set_emission();
       setOpen(false);
   }
 
 
-  //OPEN Q: should we remove the SEARCH button since we already have the datagrid functionality
   return (
     <div>
       <Button variant="contained" position="relative"
         style={{ left: '95%',  transform: 'translateX(-50%)', color : "#FFFFFF", fontFamily : "Poppins"}}
         onClick={handleClickOpen}>
-        ADD ENTRY
+        NEW GOAL
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>New activity</DialogTitle>
+        <DialogTitle>Set Goal</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Please enter actitivty details below.
+            Please enter goal details below.
           </DialogContentText>
-          <FormControl fullWidth>
+          <FormControl fullWidth sx={{mb: 2, mt: 2}}>
                 <InputLabel id="activity-input">Item</InputLabel>
                 <Select
                     id="item"
@@ -169,18 +108,7 @@ const GoGreenDialog = () => {
                  {categoryActivity.map((a) => { return (<MenuItem key={a.value} value={a.value}>{a.label}</MenuItem>);})}
                 </Select>
                 </FormControl>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="date"
-            type="date"
-            name="date"
-            value={inputs.date}
-            onChange={handleChange}
-            fullWidth
-            variant="outlined"
-          />
-          <FormControl fullWidth>
+          <FormControl fullWidth sx={{mb: 1}}>
                 <InputLabel id="activity-input-2">Parameter</InputLabel>
                 <Select
                     id="parameter"
@@ -195,9 +123,9 @@ const GoGreenDialog = () => {
           <TextField
             autoFocus
             margin="dense"
-            id="parameter_value"
-            label="Parameter Value"
-            name="parameter_value"
+            id="target_value"
+            label="Target"
+            name="target_value"
             value={inputs.parameter_value}
             onChange={handleChange}
             fullWidth
@@ -213,4 +141,4 @@ const GoGreenDialog = () => {
   )
 }
 
-export default GoGreenDialog
+export default GoGreenSetGoal

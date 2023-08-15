@@ -11,13 +11,15 @@ import InboxRoundedIcon from '@mui/icons-material/InboxRounded';
 import GoGreenBarChart from '../components/GoGreenBarChart';
 import UserContext from './user-context.js';
 import GoGreenDataGrid from '../components/GoGreenDataGrid.js';
+import GoGreenSetGoal from '../components/GoGreenSetGoal.js';
+import {all_months} from '../components/subcategories';
 
 const flexFormat_menu = { display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'left' };
 const flexFormat = { display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly' };
 
 const columns = [
-    { field: 'id', 
-      headerName: 'Item', 
+    { field: 'goal_id', 
+      headerName: 'ID', 
       headerAlign: 'center', 
       align : 'center', 
       flex: 0.5,
@@ -47,7 +49,7 @@ const columns = [
         editable: true,
     },
     {
-      field: 'parameter',
+      field: 'param_name',
       headerName: 'Parameter',
       headerAlign: 'center',
       align : 'center',
@@ -58,7 +60,7 @@ const columns = [
       editable: true,
     },
     {
-      field: 'targetValue',
+      field: 'param_value',
       headerName: 'Target',
       headerAlign: 'center',
       align : 'center',
@@ -71,69 +73,13 @@ const columns = [
     }
   ];
 
-const rows = [
-    { id: 1, category: 'Transport', activity: 'Taxi', parameter: 'money', targetValue : 35 },
-    { id: 2, category: 'Transport', activity: 'Car', parameter: 'money', targetValue : 35 },
-    { id: 3, category: 'Transport', activity: 'Flight', parameter:'distance', targetValue : 35 },
-    { id: 4, category: 'Food', activity: 'Meat', parameter: 'money', targetValue : 16 },
-    { id: 5, category: 'Food', activity: 'Dairy', parameter: null },
-    { id: 6, category: 'Transport', activity: 'Bus', parameter: 'money', targetValue : 150 },
-    { id: 7, category: 'Household', activity: 'Electricity', parameter: 'money', targetValue : 44 },
-    { id: 8, category: 'Household', activity: 'Water', parameter: 'money', targetValue : 36 },
-    { id: 9, category: 'Transport', activity: 'Train', parameter: 'money', targetValue : 65 },
-  ];
 
-  // 21.25 is avg per month since 0.7/day and 255kg per year
-const data = [
-  {
-    "name": "January",
-    "actual": 30,
-    "target": 25,
-    "avg": 22.25
-  },
-  {
-    "name": "Feburary",
-    "actual": 28,
-    "target": 24,
-    "avg": 22.25
-  },
-  {
-    "name": "March",
-    "actual": 25,
-    "target": 22,
-    "avg": 22.25
-  },
-  {
-    "name": "April",
-    "actual": 30,
-    "target": 19,
-    "avg": 22.25
-  },
-  {
-    "name": "May",
-    "actual": 24,
-    "target": 18,
-    "avg": 22.25
-  },
-  {
-    "name": "June",
-    "actual": 20,
-    "target": 22,
-    "avg": 22.25
-  },
-  {
-    "name": "July",
-    "actual": 23,
-    "target": 19,
-    "avg": 22.25
-  }
-]
-
-
+// 21.25 is avg per month since 0.7/day and 255kg per year
 
 // reusable element for the chart for each category
-export const ChartComponent = () => {
-
+export const ChartComponent = ({inputData}) => {
+  console.log('inputs: ', inputData)
+  //console.log('inputs: ', inputData.name)
   return(
     <div>
     <Paper
@@ -144,8 +90,8 @@ export const ChartComponent = () => {
       height: 240,
     }}
     >
-    <Typography>Insert Header</Typography>
-    <GoGreenBarChart/>
+    <Typography>{inputData.name ? inputData.name : 'Not available'}</Typography>
+    <GoGreenBarChart inputData={inputData}/>
   </Paper>
   </div>
   );
@@ -157,17 +103,46 @@ export const ChartComponent = () => {
 // could make the data grid so that we have an entry for each category exactly 
 // i.e. so that there is no need to add another row
 const GoGreenDashboard = () => {
-  //const { user_id } = useParams();
   const [isDashboard, setIsDashboard] = useState(true);
-  const [dashboardData, setDashboardData] = useState([]);
-  const user = useContext(UserContext);
-  console.log('current user is: ', user);
+  const [timeseriesData, setTimeseriesData] = useState([
+    {"month" : '1', "value" : 0},
+    {"month" : '2', "value" : 0},
+    {"month" : '3', "value" : 0},
+    {"month" : '4', "value" : 0},
+    {"month" : '5', "value" : 0},
+    {"month" : '6', "value" : 0},
+    {"month" : '7', "value" : 0}
+  ]);
+  const [performanceData, setPerformanceData] = useState([
+    {"name": "Transport", "actual": 0, "target":0},
+    {"name": "Food", "actual": 0, "target":0},
+    {"name": "Household", "actual": 0, "target":0},
+    {"name": "Personal Care", "actual": 0, "target":0},
+  ]);
+  const [goalsData, setGoalsData] = useState([]);
+  const [target, setTarget] = useState(0);
+  const [user, setUser] = useContext(UserContext);
+  // get date and current month
+  const date = new Date(); 
+  let month = date.getMonth() + 1;
+  let year = date.getFullYear();
+  //console.log('current user is: ', user);
+  //console.log('current month is: ', month, ' and year ', year);
 
   //fetch data from the database
-  useEffect(() => {
-    // insert fetch query for the database - for now we set to manual data 
-    setDashboardData(rows);
-  });
+  useEffect(()=> {
+    //fetch query
+    fetch(`http://localhost:5000/allgoals?username=${user}&month=${month}&year=${year}`)
+    .then(res => res.json())
+    .then(resJson => {
+      if (resJson.success === 'true') {
+        setGoalsData(resJson['content']);
+        setPerformanceData(resJson['performance']);
+        setTimeseriesData(resJson['timeseries']);
+        setTarget(resJson['overall_target']);
+      }}
+      )},[]);
+    
 
   return (
     <Container style={flexFormat}>
@@ -196,40 +171,29 @@ const GoGreenDashboard = () => {
         {!isDashboard && (<Box height={400} width={600}>
             <Typography 
             sx={{ color:"secondary", fontSize : '20px', marginBottom : '10px', marginTop : '20px', marginLeft : '20px'}}> 
-            Goal Setting 
+            Monthly Goal Setting 
             </Typography>
-            <GoGreenDataGrid route={dashboardData}  columns={columns}  />
-            {/* <DataGrid 
-            initialState={{
-                pagination: {
-                  paginationModel: {
-                    pageSize: 5,
-                  },
-                },
-              }}
-              pageSizeOptions={[5]}
-            columns={columns} 
-            rows={dashboardData} 
-            checkboxSelection/> */}
+            <GoGreenSetGoal/>
+            <GoGreenDataGrid route={goalsData}  columns={columns}  />
         </Box>)}
         {isDashboard &&
         <Box height={400} width={600}>
             <Typography
                 sx={{ color:"secondary", fontSize : '20px', marginBottom : '10px', marginTop : '20px', marginLeft : '20px'}}>
-                Dashboard
+                Dashboard for {all_months[parseInt(month)-1]["name"]}
             </Typography>
             <Grid container spacing={4}>
                 <Grid item xs={3} >
-                    <OutlinedCard stat={'Transport'} value={721000} change={11.01}/>
+                    <OutlinedCard stat={'Transport'} value={performanceData[0]['actual']} change={performanceData[0]['change']}/>
                 </Grid>
                 <Grid item xs={3} >
-                    <OutlinedCard stat={'Food'} value={367000} change={9.15}/>
+                    <OutlinedCard stat={'Household'} value={performanceData[1]['actual']} change={performanceData[1]['change']}/>
                 </Grid>
                 <Grid item xs={3} >
-                    <OutlinedCard stat={'Household'} value={1156} change={-0.56}/>
+                    <OutlinedCard stat={'Food'} value={performanceData[2]['actual']} change={performanceData[2]['change']}/>
                 </Grid>
                 <Grid item xs={3} >
-                    <OutlinedCard stat={'Personal Care'} value={239000} change={-1.48}/>
+                    <OutlinedCard stat={'Personal Care'} value={performanceData[3]['actual']} change={performanceData[3]['change']}/>
                 </Grid>
             <Grid item xs={12} >
             <Paper
@@ -240,20 +204,20 @@ const GoGreenDashboard = () => {
                     height: 240,
                   }}
                 >
-            <Chart/>
+            <Chart inputData={timeseriesData} target={target}/>
             </Paper>
             </Grid>
             <Grid item xs={6} >
-              <ChartComponent/>
+              <ChartComponent inputData={performanceData[0]}/>
             </Grid>
             <Grid item xs={6} >
-            <ChartComponent/>
+            <ChartComponent inputData={performanceData[1]}/>
             </Grid>
             <Grid item xs={6}>
-              <ChartComponent/>
+              <ChartComponent inputData={performanceData[2]}/>
             </Grid>
             <Grid item xs={6}>
-              <ChartComponent/>
+              <ChartComponent inputData={performanceData[3]}/>
             </Grid>
             </Grid>
         </Box>}
