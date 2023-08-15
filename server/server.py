@@ -81,6 +81,7 @@ def add_activity():
     username = request.json.get('username')
     #history_id = request.json.get('id')
     date = request.json.get('date')
+    #print('js date: ', date)
     date_format = '%Y-%m-%d'
     activity_date = datetime.strptime(date, date_format)
     category = request.json.get('category')
@@ -112,7 +113,7 @@ def get_activities_user():
     all_activities_json = [{'username': activity.username, 'activity_date': activity.activity_date,
                              'category': activity.category, 'subcategory': activity.subcategory, 
                              'param_name': activity.param_name, 'param_value': activity.param_value, 
-                             'emission':activity.emission, 'history_id': activity.history_id } for activity in all_activties]
+                             'emission': round(activity.emission,2), 'history_id': activity.history_id } for activity in all_activties]
     
     # get the total emissions and breakdown for the main 4 categories
     transport_total, household_total, food_total, personal_care_total = 0,0,0,0
@@ -134,6 +135,161 @@ def get_activities_user():
                         {"name": "Household", "value" : round(household_total,2)}, 
                         {"name": "Food", "value" : round(food_total,2)},
                         {"name": "Personal Care", "value" : round(personal_care_total,2)}]}), 201
+
+# routes for set goals page
+@app.route('/newgoal', methods=['POST'])
+def add_goal(): 
+    print('made it into the add goal function.')
+    # collect the input from API request
+    username = request.json.get('username')
+    category = request.json.get('category')
+    subcategory = request.json.get('subcategory')
+    param_name = request.json.get('parameter')
+    param_value = request.json.get('target_value')
+
+    # check if we already have a value for the subcategory
+    goal = Goals.query.filter_by(username=username, subcategory=subcategory).first()
+
+    # if goal is none we add new entry to the DB
+    if not goal: 
+        # post new information to the DB
+        entry = Goals(username=username,
+                category=category, subcategory=subcategory, param_name=param_name, param_value=param_value)                  
+        db.session.add(entry)
+        db.session.commit()
+    #otherwise we only update the target value
+    else: 
+        goal.param_value = param_value
+        db.session.commit()
+    return jsonify({"msg": "Goal Entry created successfully", "success": "true"}), 201
+
+# retrieve all activities for a user and their total footprint
+@app.route('/allgoals', methods=['GET'])
+def get_goals_user():
+    username = request.args.get('username')
+    month = int(request.args.get('month'))
+    year = int(request.args.get('year'))
+    prev_month, prev_year = get_prev_month_year(month, year)
+    # needed to show timeseries of the last 6 months
+    prev_month_2, prev_year_2 = get_prev_month_year(prev_month, prev_year) # 2
+    prev_month_3, prev_year_3 = get_prev_month_year(prev_month_2, prev_year_2) # 3
+    prev_month_4, prev_year_4 = get_prev_month_year(prev_month_3, prev_year_3) # 4
+    prev_month_5, prev_year_5 = get_prev_month_year(prev_month_4, prev_year_4) # 5
+    prev_month_6, prev_year_6 = get_prev_month_year(prev_month_5, prev_year_5) # 6
+
+    #print('username is: ', username, " month and year ", month, year)
+    # return list of all goals
+    all_goals= Goals.query.filter_by(username=username).all()
+    if not all_goals:
+        return jsonify({"msg": "Currently no activities available for this user", "success": "false"}), 404
+    all_goals_json = [{'username': goal.username, 'category': goal.category, 'subcategory': goal.subcategory, 
+                    'param_name': goal.param_name, 'param_value': goal.param_value,'goal_id': goal.goal_id } for goal in all_goals]
+    
+    # aggregatate goals vs actual for each category
+    all_activties = History.query.filter_by(username=username).all()
+    if not all_activties:
+        return jsonify({"msg": "Currently no activities available for this user", "success": "false"}), 404
+    all_activities_json = [{'username': activity.username, 'activity_date': activity.activity_date,
+                             'category': activity.category, 'subcategory': activity.subcategory, 
+                             'param_name': activity.param_name, 'param_value': activity.param_value, 
+                             'emission': round(activity.emission,2), 'history_id': activity.history_id } for activity in all_activties]
+
+    # aggregate actual for each category in current month and previous month
+    transport_total, household_total, food_total, personal_care_total = 0,0,0,0
+    transport_total_prev, household_total_prev, food_total_prev, personal_care_total_prev = 0,0,0,0
+    prev2_total, prev3_total, prev4_total, prev5_total, prev6_total = 0,0,0,0,0
+    for activity in all_activties: 
+        # get data for current month
+        if (activity.activity_date.year == year and activity.activity_date.month == month):
+            if activity.category == 'Transport':
+                transport_total += activity.emission
+            elif activity.category == 'Household':
+                household_total += activity.emission
+            elif activity.category == 'Food':
+                food_total += activity.emission
+            elif activity.category == 'Personal Care':
+                personal_care_total += activity.emission
+        # get data for previous month
+        elif (activity.activity_date.year == prev_year and activity.activity_date.month == prev_month):
+            if activity.category == 'Transport':
+                transport_total_prev += activity.emission
+            elif activity.category == 'Household':
+                household_total_prev += activity.emission
+            elif activity.category == 'Food':
+                food_total_prev += activity.emission
+            elif activity.category == 'Personal Care':
+                personal_care_total_prev += activity.emission
+        elif (activity.activity_date.year == prev_year_2 and activity.activity_date.month == prev_month_2):
+            prev2_total +=  activity.emission
+        elif (activity.activity_date.year == prev_year_3 and activity.activity_date.month == prev_month_3):
+            prev3_total +=  activity.emission
+        elif (activity.activity_date.year == prev_year_4 and activity.activity_date.month == prev_month_4):
+            prev4_total +=  activity.emission
+        elif (activity.activity_date.year == prev_year_5 and activity.activity_date.month == prev_month_5):
+            prev5_total +=  activity.emission
+        elif (activity.activity_date.year == prev_year_6 and activity.activity_date.month == prev_month_6):
+            prev6_total +=  activity.emission
+            
+    
+    # calculate change for each category
+    transport_change = transport_total - transport_total_prev
+    household_change = household_total - household_total_prev
+    food_change = food_total - food_total_prev
+    personal_care_change = personal_care_total - personal_care_total_prev
+    
+    # aggregate target for each category
+    transport_target, household_target, food_target, personal_care_target = 0,0,0,0
+    for goal in all_goals: 
+        if goal.category == 'Transport':
+            transport_target += goal.param_value
+        elif goal.category == 'Household':
+            household_target += goal.param_value
+        elif goal.category == 'Food':
+            food_target += goal.param_value
+        elif goal.category == 'Personal Care':
+            personal_care_target += goal.param_value
+    
+    # agg current and prev months as well for timeseries
+    current_month = transport_total + household_total + food_total + personal_care_total
+    prev1_total = transport_total_prev + household_total_prev + food_total_prev + personal_care_total_prev
+    total_target = transport_target + household_target + food_target + personal_care_target
+
+    return jsonify({"msg": "All activities of current user", "success": "true", 
+                    "content" : all_goals_json, 
+                    "overall_target" : round(total_target,2), 
+                    "performance" : [
+                        {"name" : "Transport", "actual" : round(transport_total,2), 
+                         "target" : round(transport_target,2), "change": round(transport_change, 2)}, 
+                        {"name": "Household", "actual" : round(household_total,2), 
+                         "target" : round(household_target,2), "change": round(household_change, 2)}, 
+                        {"name": "Food", "actual" : round(food_total,2), 
+                         "target" : round(food_target,2), "change": round(food_change, 2)},
+                        {"name": "Personal Care", "actual" : round(personal_care_total,2), 
+                         "target" : round(personal_care_target,2), "change": round(personal_care_change, 2)}],
+                    "timeseries" : [
+                        {"month" : format_month(prev_month_6), "value" : prev6_total, "target" :  round(total_target,2)},
+                        {"month" : format_month(prev_month_5), "value" : prev5_total, "target" :  round(total_target,2)},
+                        {"month" : format_month(prev_month_4), "value" : prev4_total, "target" :  round(total_target,2)},
+                        {"month" : format_month(prev_month_3), "value" : prev3_total, "target" :  round(total_target,2)},
+                        {"month" : format_month(prev_month_2), "value" : prev2_total, "target" :  round(total_target,2)},
+                        {"month" : format_month(prev_month), "value" : prev1_total, "target" :  round(total_target,2)},
+                        {"month" : format_month(month), "value" : current_month, "target" :  round(total_target,2)}
+                        ] 
+                         })
+
+# get correct previous month and year
+def get_prev_month_year(month, year): 
+    prev_month = month-1
+    prev_year = year
+    if (prev_month == 0): 
+        prev_month = 12
+        prev_year = year - 1
+    return prev_month, prev_year
+
+def format_month(month): 
+    months = {1: "January", 2:"Feburary", 3: "March", 4: "April", 5: "May", 6:"June",
+              7:"July", 8: "August", 9:"September", 10: "October", 11: "November", 12:"December"}
+    return months[month]
 
 if __name__ == '__main__':
     app.run(debug=True)
