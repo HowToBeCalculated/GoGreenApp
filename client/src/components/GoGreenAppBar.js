@@ -18,8 +18,10 @@ const linksArray = [
   "profile",
   "dashboard",
   "footprint",
+  "info",
   "practice",
   "community",
+  
 ];
 const friendsData = [
   {
@@ -124,42 +126,6 @@ const GoGreenAppBar = () => {
                      />
                 ))}
                   
-                {/*                 
-                <Tab
-                  label="Profile"
-                  sx={{
-                    color: "#F5F5F5",
-                    fontWeight: "bold",
-                  }}
-                />
-                <Tab
-                  label="Dashboard"
-                  sx={{
-                    color: "#F5F5F5",
-                    fontWeight: "bold",
-                  }}
-                />
-                <Tab
-                  label="Footprint"
-                  sx={{
-                    color: "#F5F5F5",
-                    fontWeight: "bold",
-                  }}
-                />
-                <Tab
-                  label="Practice"
-                  sx={{
-                    color: "#F5F5F5",
-                    fontWeight: "bold",
-                  }}
-                />
-                <Tab
-                  label="Community"
-                  sx={{
-                    color: "#F5F5F5",
-                    fontWeight: "bold",
-                  }}
-                /> */}
               </Tabs>
             </Grid>
             <Grid item xs={0.5} />

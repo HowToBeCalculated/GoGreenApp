@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -8,6 +8,7 @@ import {
   ImageListItem,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+
 
 const friendsData = [
   {
@@ -53,6 +54,10 @@ const friendsData = [
 ];
 
 const GoGreenFriends = () => {
+
+  
+
+
   const [showAllFriends, setShowAllFriends] = useState(false);
 
   const handleViewAllClick = () => {
