@@ -32,7 +32,7 @@ function App() {
     <UserContextProvider>
       <ThemeProvider theme={theme}>
         <BrowserRouter>
-          <GoGreenAppBar />
+          <NavBar />
           {/* </header>
       <section> */}
           <Routes>
