@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { useTheme } from '@mui/material/styles';
-import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 
 export default function GoGreenBarChart({inputData}) {
   const theme = useTheme();
-  console.log('we have received: ', inputData);
   
   return (
     <>

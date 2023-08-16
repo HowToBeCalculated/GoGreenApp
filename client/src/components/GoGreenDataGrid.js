@@ -3,7 +3,6 @@ import { DataGrid} from '@mui/x-data-grid';
 
 //Datagrid to display podcasts information as well as saved information on user profile
 export default function GoGreenDataGrid({ route, columns, id}) {
-    console.log('received in route: ', route);
   
   return (
     <Container sx={{mt: 5, backgroundColor: 'white', width: '100%', borderRadius: '10px'}}>

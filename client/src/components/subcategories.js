@@ -79,6 +79,7 @@ const categoryActivity = [
     },
     {
       label: "Meat products (poultry)",
+      apicode: "consumer_goods-type_meat_products_poultry",
       value: 9,
       param_used: "money",
       parameter: ['usd']

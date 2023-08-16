@@ -1,20 +1,18 @@
 // TO DO IMPLEMENT DASHBOARD 
-import React, {useState, useParams, useEffect, useContext} from 'react';
-import { Container, Typography, Box, Pagination, Grid } from '@mui/material';
-import { DataGrid } from '@mui/x-data-grid';
+import React, {useState, useEffect, useContext} from 'react';
+import { Container, Typography, Box, Grid } from '@mui/material';
 import Chart from '../components/GoGreenChart.js'
 import OutlinedCard from '../components/GoGreenStatCard';
-import {List, Collapse, ListItem, ListItemButton, ListItemIcon, Paper} from '@mui/material';
+import {List, ListItem, ListItemButton, ListItemIcon, Paper} from '@mui/material';
 import ListItemText from '@mui/material/ListItemText';
 import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded';
 import InboxRoundedIcon from '@mui/icons-material/InboxRounded';
 import GoGreenBarChart from '../components/GoGreenBarChart';
 import UserContext from './user-context.js';
 import GoGreenDataGrid from '../components/GoGreenDataGrid.js';
-import GoGreenSetGoal from '../components/GoGreenSetGoal.js';
+import GoGreenDialog from '../components/GoGreenDialog.js';
 import {all_months} from '../components/subcategories';
 
-const flexFormat_menu = { display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'left' };
 const flexFormat = { display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly' };
 
 const columns = [
@@ -30,46 +28,46 @@ const columns = [
       field: 'category',
       headerName: 'Category',
       headerAlign: 'center',
-      fontWeight : 'bold',
       align : 'center',
       flex: 1,
       headerClassName: 'header-styling',
-      align: 'center', 
-      editable: true,
+      align: 'center'
     },
     {
-        field: 'subcategory',
-        headerName: 'Subcategory',
-        headerAlign: 'center',
-        align : 'center',
-        fontWeight : 'bold',
-        flex: 2,
-        headerClassName: 'header-styling',
-        align: 'center', 
-        editable: true,
+      field: 'subcategory',
+      headerName: 'Subcategory',
+      headerAlign: 'center',
+      align : 'center',
+      flex: 2,
+      headerClassName: 'header-styling',
+      align: 'center'
     },
     {
       field: 'param_name',
       headerName: 'Parameter',
       headerAlign: 'center',
       align : 'center',
-      fontWeight : 'bold',
       flex: 1,
       headerClassName: 'header-styling',
-      align: 'center', 
-      editable: true,
+      align: 'center'
     },
     {
       field: 'param_value',
-      headerName: 'Target',
+      headerName: 'Parameter Target',
       headerAlign: 'center',
       align : 'center',
-      fontWeight : 'bold',
-      type: 'number',
       flex: 1,
       headerClassName: 'header-styling',
-      align: 'center', 
-      editable: true,
+      align: 'center'
+    },
+    {
+      field: 'emission',
+      headerName: 'Emissions Target',
+      headerAlign: 'center',
+      align : 'center',
+      flex: 1,
+      headerClassName: 'header-styling',
+      align: 'center'
     }
   ];
 
@@ -78,8 +76,6 @@ const columns = [
 
 // reusable element for the chart for each category
 export const ChartComponent = ({inputData}) => {
-  console.log('inputs: ', inputData)
-  //console.log('inputs: ', inputData.name)
   return(
     <div>
     <Paper
@@ -122,16 +118,14 @@ const GoGreenDashboard = () => {
   const [goalsData, setGoalsData] = useState([]);
   const [target, setTarget] = useState(0);
   const [user, setUser] = useContext(UserContext);
+  
   // get date and current month
   const date = new Date(); 
   let month = date.getMonth() + 1;
   let year = date.getFullYear();
-  //console.log('current user is: ', user);
-  //console.log('current month is: ', month, ' and year ', year);
 
   //fetch data from the database
   useEffect(()=> {
-    //fetch query
     fetch(`http://localhost:5000/allgoals?username=${user}&month=${month}&year=${year}`)
     .then(res => res.json())
     .then(resJson => {
@@ -141,7 +135,7 @@ const GoGreenDashboard = () => {
         setTimeseriesData(resJson['timeseries']);
         setTarget(resJson['overall_target']);
       }}
-      )},[]);
+      )},[goalsData]);
     
 
   return (
@@ -171,9 +165,9 @@ const GoGreenDashboard = () => {
         {!isDashboard && (<Box height={400} width={600}>
             <Typography 
             sx={{ color:"secondary", fontSize : '20px', marginBottom : '10px', marginTop : '20px', marginLeft : '20px'}}> 
-            Monthly Goal Setting 
+             Monthly Goal Setting
             </Typography>
-            <GoGreenSetGoal/>
+            <GoGreenDialog type={"goal"} />
             <GoGreenDataGrid route={goalsData}  columns={columns}  />
         </Box>)}
         {isDashboard &&

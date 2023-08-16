@@ -134,7 +134,7 @@ def get_activities_user():
                         {"name" : "Transport", "value" : round(transport_total,2)}, 
                         {"name": "Household", "value" : round(household_total,2)}, 
                         {"name": "Food", "value" : round(food_total,2)},
-                        {"name": "Personal Care", "value" : round(personal_care_total,2)}]}), 201
+                        {"name": "Personal Care", "value" : round(personal_care_total,2)}]}), 200
 
 # routes for set goals page
 @app.route('/newgoal', methods=['POST'])
@@ -145,7 +145,10 @@ def add_goal():
     category = request.json.get('category')
     subcategory = request.json.get('subcategory')
     param_name = request.json.get('parameter')
-    param_value = request.json.get('target_value')
+    param_value = request.json.get('parameter_value')
+    emission = request.json.get('emission')
+
+    print("we are adding: ", username, category, subcategory, param_name, param_value, emission)
 
     # check if we already have a value for the subcategory
     goal = Goals.query.filter_by(username=username, subcategory=subcategory).first()
@@ -153,8 +156,8 @@ def add_goal():
     # if goal is none we add new entry to the DB
     if not goal: 
         # post new information to the DB
-        entry = Goals(username=username,
-                category=category, subcategory=subcategory, param_name=param_name, param_value=param_value)                  
+        entry = Goals(username=username, category=category, subcategory=subcategory, 
+                      param_name=param_name, param_value=param_value, emission=emission)                  
         db.session.add(entry)
         db.session.commit()
     #otherwise we only update the target value
@@ -183,7 +186,8 @@ def get_goals_user():
     if not all_goals:
         return jsonify({"msg": "Currently no activities available for this user", "success": "false"}), 404
     all_goals_json = [{'username': goal.username, 'category': goal.category, 'subcategory': goal.subcategory, 
-                    'param_name': goal.param_name, 'param_value': goal.param_value,'goal_id': goal.goal_id } for goal in all_goals]
+                    'param_name': goal.param_name, 'param_value': goal.param_value, 'emission': goal.emission, 
+                    'goal_id': goal.goal_id } for goal in all_goals]
     
     # aggregatate goals vs actual for each category
     all_activties = History.query.filter_by(username=username).all()
@@ -241,13 +245,13 @@ def get_goals_user():
     transport_target, household_target, food_target, personal_care_target = 0,0,0,0
     for goal in all_goals: 
         if goal.category == 'Transport':
-            transport_target += goal.param_value
+            transport_target += goal.emission
         elif goal.category == 'Household':
-            household_target += goal.param_value
+            household_target += goal.emission
         elif goal.category == 'Food':
-            food_target += goal.param_value
+            food_target += goal.emission
         elif goal.category == 'Personal Care':
-            personal_care_target += goal.param_value
+            personal_care_target += goal.emission
     
     # agg current and prev months as well for timeseries
     current_month = transport_total + household_total + food_total + personal_care_total

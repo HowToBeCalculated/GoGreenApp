@@ -34,7 +34,7 @@ const styled = {mt: 2.5, fontFamily : "Poppins", color : 'inherit', marginRight:
 export const NavBar = () => {
     const [user, setUser] = useContext(UserContext);
     let navigate = useNavigate();
-    console.log('current user is; ', user);
+    //console.log('current user is; ', user);
 
     const logout = () => {
         // set user to null

@@ -72,23 +72,18 @@ const GoGreenFootprint = () => {
         setTotal(resJson['total']);
         setBreakdown(resJson['breakdown']);
       }}
-      )},[]);
+      )},[footprintData]);
 
   //define search functionality 
-  const search = () => {
-    console.log('search');
-    //fetch filtered data from DB and display 
-    //setFootprintData(filtered_data); 
-  }
-
-  console.log('current footprint data: ', footprintData);
-  
+  // const search = () => {
+  //   console.log('search');
+  // }
   
   return (
     <div>
     <Container sx={{mb: 10}}>
       <Typography variant='h4' sx={styled}>Data Entry</Typography>
-        <Grid container spacing={3}>
+        <Grid container spacing={3} sx={{mb: 3}}>
           <Grid item xs={3}>
             <Paper sx={{padding: 3, height: 250, width: 300}}>
               <Typography variant='h7' sx={{fontFamily : "Poppins"}}>
@@ -104,8 +99,8 @@ const GoGreenFootprint = () => {
               <GoGreenPieChart breakdown={breakdown}/>
           </Grid>
         </Grid>
-        <Box component="form" noValidate onSubmit={search}>
-        <TextField 
+        <Box component="form" noValidate>
+        {/* <TextField 
           id="search" 
           label="Enter search term" 
           name="search"
@@ -113,7 +108,7 @@ const GoGreenFootprint = () => {
           sx={{marginTop: 5}}/>
         <Button type='submit' variant="contained" style={{ left: '5%', transform: 'translateX(-50%)', marginTop: 50, color : "#FFFFFF", fontFamily : "Poppins"}}>
           Search
-        </Button>
+        </Button> */}
         <GoGreenDialog />
       </Box>
         <GoGreenDataGrid route={footprintData} columns={columns}/>

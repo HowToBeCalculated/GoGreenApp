@@ -6,8 +6,9 @@ import {categoryActivity} from '../components/subcategories';
 const buttonStyle =  {transform: 'translateX(-50%)', color : "#FFFFFF", fontFamily : "Poppins"};
 const token = process.env.CLIMATIQ;
 
-const GoGreenDialog = () => {
+const GoGreenDialog = ({type}) => {
     const [user, setUser] = useContext(UserContext);
+    //const url_used = ((type !== "goal") ? `http://localhost:5000/newactivity` : `http://localhost:5000/newgoal`);
     const [emission, setEmission] = useState(0);
     const [inputs, setInputs] = useState({
     username : "", 
@@ -39,7 +40,7 @@ const GoGreenDialog = () => {
     }));  
     };
 
-    // post updates to the database
+    // post updates to the database (activity)
     async function post_updates (header) {
       fetch(`http://localhost:5000/newactivity`, header)
       .then(data => {
@@ -50,12 +51,33 @@ const GoGreenDialog = () => {
       }).then(update => {
         if (update.success !== 'true') {
             //inform user that the information provided was not found in the database
-            window.alert('There was an issue creating your activtiy. Please try again.');
-            console.log('Error creating new activity.');
+            window.alert('There was an issue adding your item. Please try again.');
+            console.log('Error creating new item.');
         }})
       .catch(e => {
         console.log(e);
       });
+
+    }
+
+    // post updates to the database (goal)
+    async function post_updates_goal (header) {
+      fetch(`http://localhost:5000/newgoal`, header)
+      .then(data => {
+      if (!data.ok) {
+        throw Error(data.status);
+      }
+      return data.json();
+      }).then(update => {
+        if (update.success !== 'true') {
+            //inform user that the information provided was not found in the database
+            window.alert('There was an issue adding your item. Please try again.');
+            console.log('Error creating new item.');
+        }})
+      .catch(e => {
+        console.log(e);
+      });
+
     }
 
      // post request to Climatiq API to get access to emissions value
@@ -69,7 +91,6 @@ const GoGreenDialog = () => {
       } else {
         return data.json()
       }}).then(resJson => {
-        console.log('we are here: ', resJson.co2e);
         inputs.emission = resJson.co2e
         setEmission(resJson.co2e);
       })
@@ -126,8 +147,12 @@ const GoGreenDialog = () => {
         body: JSON.stringify(inputs),
       };
       
-      console.log("we have made it here");
-      post_updates(options);
+      if (type !== "goal") {
+        post_updates(options);
+      } else {
+        post_updates_goal(options);
+      }
+      
       }
     }
   
@@ -149,15 +174,15 @@ const GoGreenDialog = () => {
       <Button variant="contained" position="relative"
         style={{ left: '95%',  transform: 'translateX(-50%)', color : "#FFFFFF", fontFamily : "Poppins"}}
         onClick={handleClickOpen}>
-        ADD ENTRY
+        {(type !== "goal") ? "ADD ENTRY" : "SET GOAL"}
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>New activity</DialogTitle>
+        <DialogTitle>{(type !== "goal") ? "New activity" : "Set new goal"}</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Please enter actitivty details below.
           </DialogContentText>
-          <FormControl fullWidth>
+          <FormControl fullWidth sx={{mt: 2, mb: 1}}>
                 <InputLabel id="activity-input">Item</InputLabel>
                 <Select
                     id="item"
@@ -169,7 +194,7 @@ const GoGreenDialog = () => {
                  {categoryActivity.map((a) => { return (<MenuItem key={a.value} value={a.value}>{a.label}</MenuItem>);})}
                 </Select>
                 </FormControl>
-          <TextField
+          {(type !== "goal") && (<TextField
             autoFocus
             margin="dense"
             id="date"
@@ -179,8 +204,8 @@ const GoGreenDialog = () => {
             onChange={handleChange}
             fullWidth
             variant="outlined"
-          />
-          <FormControl fullWidth>
+          />)}
+          <FormControl fullWidth sx={{mb: 2, mt: 2}}>
                 <InputLabel id="activity-input-2">Parameter</InputLabel>
                 <Select
                     id="parameter"
