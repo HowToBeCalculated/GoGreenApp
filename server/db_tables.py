@@ -50,6 +50,7 @@ class Goals(db.Model):
     subcategory = db.Column(db.String(256), nullable=False)
     param_name = db.Column(db.String(256))
     param_value = db.Column(db.Float(precision=6))
+    emission = db.Column(db.Float(precision=6))
 
 
 class History(db.Model):
