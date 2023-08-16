@@ -59,6 +59,14 @@ def signup():
     db.session.add(user)
     db.session.commit()
 
+    # record activity in Acitvity DB
+    points = 10
+    activity_logged = "log_in_created"
+    timestamp = datetime.now()
+    activity_log = Activity(username=username, activity_date = timestamp, activity=activity_logged, points=points)
+    db.session.add(activity_log)
+    db.session.commit()
+
     return jsonify({"msg": "User created successfully", "success": "true"}), 201
 
 
@@ -72,6 +80,15 @@ def login():
     user = User.query.filter_by(username=username).first()
     if not user or user.password != password:
         return jsonify({"msg": "Invalid username or password"}), 401
+    
+    # record activity in Acitvity DB
+    points = 10
+    activity_logged = "logged_in"
+    timestamp = datetime.now()
+    activity_log = Activity(username=username, activity_date = timestamp, activity=activity_logged, points=points)
+    db.session.add(activity_log)
+    db.session.commit()
+
     return jsonify({"msg": "Logged in successfully", "success": "true"}), 200
 
 @app.route('/newactivity', methods=['POST'])
@@ -100,6 +117,15 @@ def add_activity():
             emission=emission)                  
     db.session.add(entry)
     db.session.commit()
+
+    # record activity in Acitvity DB
+    points = 20
+    activity_logged = "new_activity_added"
+    timestamp = datetime.now()
+    activity_log = Activity(username=username, activity_date = timestamp, activity=activity_logged, points=points)
+    db.session.add(activity_log)
+    db.session.commit()
+
     return jsonify({"msg": "Actvity Entry created successfully", "success": "true"}), 201
 
 # retrieve all activities for a user and their total footprint
@@ -164,6 +190,15 @@ def add_goal():
     else: 
         goal.param_value = param_value
         db.session.commit()
+
+    # record activity in Acitvity DB
+    points = 20
+    activity_logged = "new_goal_added"
+    timestamp = datetime.now()
+    activity_log = Activity(username=username, activity_date = timestamp, activity=activity_logged, points=points)
+    db.session.add(activity_log)
+    db.session.commit()
+
     return jsonify({"msg": "Goal Entry created successfully", "success": "true"}), 201
 
 # retrieve all activities for a user and their total footprint
