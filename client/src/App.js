@@ -11,8 +11,6 @@ import GoGreenFootprint from './pages/GoGreenFootprint';
 import GoGreenPractice from './pages/GoGreenPractice';
 import GoGreenCommunity from './pages/GoGreenCommunity';
 import GoGreenInfo from  './pages/GoGreenInfo';
-import {LoggedInProvider} from './pages/LoggedInContext';
-import UserContext from "./pages/user-context";
 import { UserContextProvider } from "./pages/user-context";
 
 function App() {
@@ -26,9 +24,8 @@ function App() {
         <NavBar />
         <Routes>
           <Route path="/" element={<SignUpSide />}/>
-          <Route path="/signin" element={<SignInSide />} />
           <Route path="/profile" element={<GoGreenProfile />} />
-          <Route path="/dashboard/:user_id" element={<GoGreenDashboard />}/>
+          <Route path="/dashboard" element={<GoGreenDashboard />}/>
           <Route path="/footprint" element={<GoGreenFootprint />}/>
           <Route path="/practice" element={<GoGreenPractice />}/>
           <Route path="/community" element={<GoGreenCommunity />}/>

@@ -1,68 +1,17 @@
 import * as React from 'react';
 import { useTheme } from '@mui/material/styles';
-import Paper from '@mui/material/Paper';
 import { LineChart, Line, XAxis, YAxis, Label, ResponsiveContainer, Tooltip, Legend } from 'recharts';
-
-// Generate Sales Data
-function createData(time, amount) {
-  return { time, amount };
-}
 
 
 // 21.25 is avg per month since 0.7/day and 255kg per year
-const data = [
-  {
-    "name": "January",
-    "actual": 30,
-    "target": 25,
-    "avg": 22.25
-  },
-  {
-    "name": "Feburary",
-    "actual": 28,
-    "target": 24,
-    "avg": 22.25
-  },
-  {
-    "name": "March",
-    "actual": 25,
-    "target": 22,
-    "avg": 22.25
-  },
-  {
-    "name": "April",
-    "actual": 30,
-    "target": 19,
-    "avg": 22.25
-  },
-  {
-    "name": "May",
-    "actual": 24,
-    "target": 18,
-    "avg": 22.25
-  },
-  {
-    "name": "June",
-    "actual": 20,
-    "target": 22,
-    "avg": 22.25
-  },
-  {
-    "name": "July",
-    "actual": 23,
-    "target": 19,
-    "avg": 22.25
-  }
-]
 
-
-export default function Chart() {
+export default function Chart({inputData, target}) {
   const theme = useTheme();
 
   return (
     <>
       <ResponsiveContainer>
-        <LineChart data={data}
+        <LineChart data={inputData}
           margin={{
             top: 70,
             right: 16,
@@ -71,7 +20,7 @@ export default function Chart() {
           }}
         >
           <XAxis
-            dataKey="name"
+            dataKey="month"
             stroke={theme.palette.text.secondary}
             style={theme.typography.body2}
           />
@@ -96,12 +45,12 @@ export default function Chart() {
           <Line
             isAnimationActive={false}
             type="monotone"
-            dataKey="actual"
+            dataKey="value"
             stroke={theme.palette.primary.main}
             dot={false}
           />
           <Line type="monotone" dataKey="target" stroke="#8884d8" />
-          <Line type="monotone" dataKey="actual" stroke="#82ca9d" />
+          <Line type="monotone" dataKey="value" stroke="#82ca9d" />
         </LineChart>
       </ResponsiveContainer>
     </>

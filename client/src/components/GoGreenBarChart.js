@@ -1,17 +1,16 @@
 import * as React from 'react';
 import { useTheme } from '@mui/material/styles';
-import Paper from '@mui/material/Paper';
-import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 
-export default function GoGreenBarChart(inputData) {
+export default function GoGreenBarChart({inputData}) {
   const theme = useTheme();
   
   return (
     <>
         <ResponsiveContainer>
         <BarChart
-          data={inputData}
+          data={[inputData]}
           margin={{
             top: 20,
             right: 30,

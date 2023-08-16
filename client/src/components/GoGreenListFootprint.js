@@ -16,7 +16,7 @@ const ListFootprint = () => {
         <Box sx={{ width: '100%', maxWidth: 200, bgcolor: "secondary" }}>
         <nav aria-label={<GridViewRoundedIcon />}>
         <List>
-            <ListItem disablePadding>
+            <ListItem  key={1} disablePadding>
             <ListItemButton >
                 <ListItemIcon>
                     <GridViewRoundedIcon/>
@@ -24,7 +24,7 @@ const ListFootprint = () => {
                 <ListItemText primary="Dashboard" />
             </ListItemButton>
             </ListItem>
-            <ListItem disablePadding>
+            <ListItem key={2} disablePadding>
             <ListItemButton>
                 <ListItemIcon>
                     <InboxRoundedIcon/>

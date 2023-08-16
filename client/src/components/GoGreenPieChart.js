@@ -23,14 +23,14 @@ const data = [
     }
   ];
 
-export default function GoGreenPieChart() {
+export default function GoGreenPieChart({breakdown}) {
   return (
     <div>
         <Paper sx={{p: 3, display: 'flex', flexDirection: 'column', height: 250, width: 700, ml: 15}}>
         <Typography variant='h9' sx={{fontFamily : "Poppins", ml: 2}}>Breakdown</Typography>
         <ResponsiveContainer >
         <PieChart width={400} height={150}>
-        <Pie data={data} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={60} outerRadius={100} fill="#82ca9d" paddingAngle={5} >
+        <Pie data={breakdown} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={60} outerRadius={100} fill="#82ca9d" paddingAngle={5} >
         {data.map((entry, index) => (
             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
           ))}

@@ -6,18 +6,35 @@ import LinkTab from '@mui/material/Link';
 import { NavLink, useNavigate } from 'react-router-dom';
 import UserContext from '../pages/user-context';
 
-const styled = {mt: 2.5, fontFamily : "Poppins", textTransform:"none", ':hover': {color:"#55BDB3"}}
-const linkStyle = {
-    color: 'inherit',
-    textDecoration: 'none',
-    marginRight: '30px',
-    padding: '10px'
-    }
+const styled = {mt: 2.5, fontFamily : "Poppins", color : 'inherit', marginRight: '15px', marginLeft: '15px', textTransform:"none", ':hover': {color:"#55BDB3"}}
+
+    function NavText({ href, text }) {
+
+        return (
+          <>
+            <Typography
+              variant='h6'
+              style={styled}
+            >
+              <NavLink
+                to={href}
+                style={{
+                  color: '#77cac2',
+                  textDecoration: 'none',
+                 ':hover': {color:"#55BDB3"}
+                }}
+              >
+                {text}
+              </NavLink>
+            </Typography>
+            </>
+          )
+        }
 
 export const NavBar = () => {
     const [user, setUser] = useContext(UserContext);
     let navigate = useNavigate();
-    console.log('current user is; ', user);
+    //console.log('current user is; ', user);
 
     const logout = () => {
         // set user to null
@@ -29,55 +46,31 @@ export const NavBar = () => {
 
 return (
     <div>{(user !== null) && (
-        <AppBar variant="outlined" color="custom" position="static" justifyContent="center">
+        <AppBar  color="custom" position="static" sx={{alignItems: 'center'}}>
             <Toolbar>
                 <Typography 
                     marginLeft="10px" 
                     padding="3px"
-                    sx={{fontFamily:"Rakkas", color:"#258B81", fontWeight : 900, fontSize:"24px"}}>
+                    sx={{fontFamily:"Rakkas", color:"#258B81", fontWeight : 900, fontSize:"24px", align: "left"}}>
                         Go
                 </Typography>
                 <Typography
                     marginLeft="10px" 
                     marginBottom="10px"
                     padding="3px"
-                    sx={{fontFamily:"Rakkas", color:"#258B81", fontWeight : 900, fontSize:"24px", marginLeft: "-47px"}}>
+                    sx={{fontFamily:"Rakkas", color:"#258B81", fontWeight : 900, fontSize:"24px", marginLeft: "-47px", marginRight: "50px"}}>
                         <br/>Green
                 </Typography>
-                    <Tabs 
-                    indicatorColor='primary'
-                    textColor='inherit'
-                    tabBarOptions={{
-                        labelStyle: { textTransform: 'none' }
-                      }}
-                    >
-                    <Tab>
-                    </Tab> 
-                    <LinkTab sx={styled}>
-                        <NavLink  to='/' style={linkStyle} > {'Home'} </NavLink> 
-                    </LinkTab>
-                    <LinkTab sx={styled}>
-                        <NavLink to='/profile' style={linkStyle}> {'Profile'} </NavLink>
-                    </LinkTab>
-                    <LinkTab sx={styled}>
-                        <NavLink to={`/dashboard/${user}`} style={linkStyle}> {'Dashboard'} </NavLink> 
-                    </LinkTab>
-                    <LinkTab sx={styled}>
-                        <NavLink to='/footprint' style={linkStyle}> {'Footprint'} </NavLink> 
-                    </LinkTab>
-                    <LinkTab sx={styled}>
-                        <NavLink to='/practice' style={linkStyle}> {'Practice'} </NavLink> 
-                    </LinkTab>
-                    <LinkTab sx={styled}>
-                        <NavLink to='/info' style={linkStyle}> {'Info'} </NavLink> 
-                    </LinkTab>
-                    <LinkTab sx={styled}>
-                        <NavLink to='/community' style={linkStyle}> {'Community'} </NavLink> 
-                    </LinkTab>
-                </Tabs>
+                    <NavText href='/' text='Home' />
+                    <NavText href='/profile' text='Profile' />
+                    <NavText href='/dashboard' text='Dashboard' />
+                    <NavText href='/footprint' text='Footprint' />
+                    <NavText href='/practice' text='Practice' />
+                    <NavText href='/info' text='Info' />
+                    <NavText href='/community' text='Community' />
+                    
                 <Button
                     color='secondary'
-                    marginRight="5px"
                     startIcon={<AccountCircleIcon style={{fontSize:'45px'}}/>}
                     sx={{fontFamily : "Poppins", 
                          textTransform:"none", 
@@ -87,7 +80,6 @@ return (
                 </Button>
                 <Button
                     color='secondary'
-                    marginRight="5px"
                     onClick = {logout}
                     sx={{fontFamily : "Poppins", 
                          textTransform:"none", 
