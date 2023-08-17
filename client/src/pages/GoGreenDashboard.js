@@ -139,7 +139,7 @@ const GoGreenDashboard = () => {
         setTimeseriesData(resJson['timeseries']);
         setTarget(resJson['overall_target']);
       }}
-      )},[currentMonth, currentYear]);
+      )},[currentMonth, currentYear, goalsData]);
     
 
   return (
@@ -178,7 +178,7 @@ const GoGreenDashboard = () => {
         <Box height={400} width={600}>
             <Typography
                 sx={{ color:"secondary", fontSize : '20px', marginBottom : '10px', marginTop : '20px'}}>
-                Dashboard for {all_months[parseInt(currentMonth)-1]["name"]}
+                Dashboard for {all_months[parseInt(currentMonth)-1]["name"]} {currentYear}
             </Typography> 
             <FormControl sx={{flexGrow: 1, mr: 1, backgroundColor: 'white', display: "inline-block"}} size="small">
             <Select

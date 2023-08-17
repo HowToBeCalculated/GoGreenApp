@@ -65,19 +65,7 @@ return (
                     <NavText href='/profile' text='Profile' />
                     <NavText href='/dashboard' text='Dashboard' />
                     <NavText href='/footprint' text='Footprint' />
-                    <NavText href='/practice' text='Practice' />
                     <NavText href='/info' text='Info' />
-                    <NavText href='/community' text='Community' />
-                    
-                <Button
-                    color='secondary'
-                    startIcon={<AccountCircleIcon style={{fontSize:'45px'}}/>}
-                    sx={{fontFamily : "Poppins", 
-                         textTransform:"none", 
-                         marginLeft: 'auto',
-                         ':hover': {color:"#55BDB3"}}}>
-                    {user.name}
-                </Button>
                 <Button
                     color='secondary'
                     onClick = {logout}

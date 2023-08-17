@@ -1,10 +1,9 @@
 // TO DO IMPLEMENT FOOTPRINT
 import React from 'react';
-import Quiz from '../components/GoGreenQuiz.js';
-
+import GoGreenQuiz from './GoGreenQuiz';
 const GoGreenPractice = () => {
   return (
-    <div><Quiz /></div>
+    <div><GoGreenQuiz /></div>
   )
 }
 

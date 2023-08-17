@@ -118,19 +118,6 @@ export default function SignUpSide() {
             <Typography component="h1" variant="h5" sx={{fontFamily : "Poppins"}}>
               Create Account
             </Typography>
-            <ButtonGroup variant="text" color = "secondary">
-                <Button 
-                    startIcon={ <Avatar src={"https://cdn-icons-png.flaticon.com/512/2702/2702602.png"}/>}  
-                    sx={{margin : '15px', padding : '10px', fontSize: '10px'}}>
-                        Sign up with Google
-                </Button>
-                <Button 
-                    startIcon={ <Avatar src={"https://1000logos.net/wp-content/uploads/2021/04/Facebook-logo.png"} />}
-                    sx={{margin : '15px', marginLeft: '5px',  padding : '10px', paddingLeft : '5px', fontSize: '10px'}}>
-                        Sign up with Facebook
-                </Button>
-            </ButtonGroup>
-            <Typography color="secondary" sx={{marginTop: '35px', fontSize: '20px'}}>-OR-</Typography>
             <Box component="form" noValidate onSubmit={handleSubmitSignUp} sx={{ mt: 1 }}>
               <TextField 
                 variant="standard"
