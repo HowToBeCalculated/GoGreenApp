@@ -74,10 +74,6 @@ const GoGreenFootprint = () => {
       }}
       )},[footprintData]);
 
-  //define search functionality 
-  // const search = () => {
-  //   console.log('search');
-  // }
   
   return (
     <div>
@@ -100,15 +96,6 @@ const GoGreenFootprint = () => {
           </Grid>
         </Grid>
         <Box component="form" noValidate>
-        {/* <TextField 
-          id="search" 
-          label="Enter search term" 
-          name="search"
-          variant="standard"
-          sx={{marginTop: 5}}/>
-        <Button type='submit' variant="contained" style={{ left: '5%', transform: 'translateX(-50%)', marginTop: 50, color : "#FFFFFF", fontFamily : "Poppins"}}>
-          Search
-        </Button> */}
         <GoGreenDialog />
       </Box>
         <GoGreenDataGrid route={footprintData} columns={columns}/>

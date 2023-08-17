@@ -1,6 +1,6 @@
 // TO DO IMPLEMENT DASHBOARD 
 import React, {useState, useEffect, useContext} from 'react';
-import { Container, Typography, Box, Grid } from '@mui/material';
+import { Container, Typography, Box, Grid, MenuItem, Select, FormControl, InputLabel} from '@mui/material';
 import Chart from '../components/GoGreenChart.js'
 import OutlinedCard from '../components/GoGreenStatCard';
 import {List, ListItem, ListItemButton, ListItemIcon, Paper} from '@mui/material';
@@ -13,14 +13,14 @@ import GoGreenDataGrid from '../components/GoGreenDataGrid.js';
 import GoGreenDialog from '../components/GoGreenDialog.js';
 import {all_months} from '../components/subcategories';
 
-const flexFormat = { display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly' };
+const flexFormat = { display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly'};
 
 const columns = [
     { field: 'goal_id', 
       headerName: 'ID', 
       headerAlign: 'center', 
       align : 'center', 
-      flex: 0.5,
+      flex: 0.3,
       headerClassName: 'header-styling',
       align: 'center' 
     },
@@ -38,7 +38,7 @@ const columns = [
       headerName: 'Subcategory',
       headerAlign: 'center',
       align : 'center',
-      flex: 2,
+      flex: 1.5,
       headerClassName: 'header-styling',
       align: 'center'
     },
@@ -47,7 +47,7 @@ const columns = [
       headerName: 'Parameter',
       headerAlign: 'center',
       align : 'center',
-      flex: 1,
+      flex: 0.8,
       headerClassName: 'header-styling',
       align: 'center'
     },
@@ -56,7 +56,7 @@ const columns = [
       headerName: 'Parameter Target',
       headerAlign: 'center',
       align : 'center',
-      flex: 1,
+      flex: 1.5,
       headerClassName: 'header-styling',
       align: 'center'
     },
@@ -65,7 +65,7 @@ const columns = [
       headerName: 'Emissions Target',
       headerAlign: 'center',
       align : 'center',
-      flex: 1,
+      flex: 1.3,
       headerClassName: 'header-styling',
       align: 'center'
     }
@@ -118,15 +118,19 @@ const GoGreenDashboard = () => {
   const [goalsData, setGoalsData] = useState([]);
   const [target, setTarget] = useState(0);
   const [user, setUser] = useContext(UserContext);
-  
-  // get date and current month
+
   const date = new Date(); 
-  let month = date.getMonth() + 1;
-  let year = date.getFullYear();
+  const [currentMonth, setCurrentMonth] = useState(date.getMonth() + 1);
+  const [currentYear, setCurrentYear] = useState(date.getFullYear());
+  const years = [date.getFullYear(), date.getFullYear()-1, date.getFullYear()-2];
+  
+  // get date and current month (default)
+  //let month = date.getMonth() + 1;
+  //let year = date.getFullYear();
 
   //fetch data from the database
   useEffect(()=> {
-    fetch(`http://localhost:5000/allgoals?username=${user}&month=${month}&year=${year}`)
+    fetch(`http://localhost:5000/allgoals?username=${user}&month=${currentMonth}&year=${currentYear}`)
     .then(res => res.json())
     .then(resJson => {
       if (resJson.success === 'true') {
@@ -135,7 +139,7 @@ const GoGreenDashboard = () => {
         setTimeseriesData(resJson['timeseries']);
         setTarget(resJson['overall_target']);
       }}
-      )},[goalsData]);
+      )},[currentMonth, currentYear]);
     
 
   return (
@@ -162,7 +166,7 @@ const GoGreenDashboard = () => {
         </List>
         </nav>
         </Box>
-        {!isDashboard && (<Box height={400} width={600}>
+        {!isDashboard && (<Box height={400} width={900}>
             <Typography 
             sx={{ color:"secondary", fontSize : '20px', marginBottom : '10px', marginTop : '20px', marginLeft : '20px'}}> 
              Monthly Goal Setting
@@ -173,9 +177,30 @@ const GoGreenDashboard = () => {
         {isDashboard &&
         <Box height={400} width={600}>
             <Typography
-                sx={{ color:"secondary", fontSize : '20px', marginBottom : '10px', marginTop : '20px', marginLeft : '20px'}}>
-                Dashboard for {all_months[parseInt(month)-1]["name"]}
-            </Typography>
+                sx={{ color:"secondary", fontSize : '20px', marginBottom : '10px', marginTop : '20px'}}>
+                Dashboard for {all_months[parseInt(currentMonth)-1]["name"]}
+            </Typography> 
+            <FormControl sx={{flexGrow: 1, mr: 1, backgroundColor: 'white', display: "inline-block"}} size="small">
+            <Select
+              variant="standard"
+              id="month"
+              value={currentMonth}
+              label="Month"
+              onChange={(e) => setCurrentMonth(e.target.value)}
+            >
+            {all_months.map((m) => { return (<MenuItem key={m.month} value={m.month} label={m.name}>{m.name}</MenuItem>);})}
+            </Select>
+            <Select
+            sx={{ml: 2, mb: 2}}
+              id="year"
+              variant="standard"
+              value={currentYear}
+              label="Year"
+              onChange={(e) => setCurrentYear(e.target.value)}
+            >
+              {years.map((y) => { return (<MenuItem key={y} value={y} label={y}>{y}</MenuItem>);})}
+            </Select>
+          </FormControl>
             <Grid container spacing={4}>
                 <Grid item xs={3} >
                     <OutlinedCard stat={'Transport'} value={performanceData[0]['actual']} change={performanceData[0]['change']}/>

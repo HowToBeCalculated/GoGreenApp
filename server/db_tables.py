@@ -37,7 +37,7 @@ class Activity(db.Model):
     activity_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(64), db.ForeignKey('USERS.username'), nullable=False)
     activity_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    activity = db.Column(db.String(256), unique=True, nullable=False)
+    activity = db.Column(db.String(256), nullable=False)
     points = db.Column(db.Integer)
 
 
