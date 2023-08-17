@@ -7,8 +7,6 @@ import pandas as pd
 from db_tables import (
     db,
     User,
-    Group,
-    Membership,
     Activity,
     Goals,
     History,
@@ -27,7 +25,7 @@ fake = Factory.create()
 fake.seed(SEED)
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///C:\\SQLite\\gogreen.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///gogreen.db'
 db.init_app(app)
 
 with app.app_context():
@@ -58,44 +56,9 @@ with app.app_context():
         for i in range(1, 1000)
     ]
 
-    user_ids = [user['username'] for user in user_profiles]
-
-    # add groups to database
-    group_profiles = [
-        {
-            'group_id': i,
-            'group_name': fake.company()+str(i) # generate unique group_name
-        }
-        for i in range(NUM_OF_GROUPS)
-    ]
-
-    # add memberships to database
-    group_ids = [group['group_id'] for group in group_profiles]
-    memberships = []
-
-    for group in group_ids:
-        group_size = rng.randint(*GROUP_MEMBER_RANGE)
-        memberships += [(user, group) for user in rng.choice(user_ids, size=group_size, replace=False)]
-
-    memberships = [(i, *j) for i, j in enumerate(memberships)]
-
     # Insert Users
     if User.query.count() == 0:
         for profile in user_profiles:
             user = User(**profile)
             db.session.add(user)
-        db.session.commit()
-
-    # Insert Groups
-    if Group.query.count() == 0:
-        for profile in group_profiles:
-            group = Group(**profile)
-            db.session.add(group)
-        db.session.commit()
-
-    # Insert Memberships
-    if Membership.query.count() == 0:
-        for membership in memberships:
-            membership_record = Membership(membership_id=membership[0], username=membership[1], group_id=membership[2])
-            db.session.add(membership_record)
         db.session.commit()
