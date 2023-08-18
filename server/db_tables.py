@@ -10,25 +10,10 @@ class User(db.Model):
     username = db.Column(db.String(64), primary_key=True)
     password = db.Column(db.String(64), nullable=False)
     fullname = db.Column(db.String(128))
+    email = db.Column(db.String(128))
+    gender = db.Column(db.String(16))
+    birthday = db.Column(db.DateTime)
     date_joined = db.Column(db.DateTime, nullable=False, default=db.func.now())
-
-
-class Group(db.Model):
-    __tablename__ = 'GROUPS'
-
-    group_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    group_name = db.Column(db.String(64), unique=True, nullable=False)
-
-
-class Membership(db.Model):
-    __tablename__ = 'MEMBERSHIP'
-
-    membership_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    username = db.Column(db.String(64), db.ForeignKey('USERS.username'), nullable=False)
-    group_id = db.Column(db.Integer, db.ForeignKey('GROUPS.group_id'), nullable=False)
-
-    user = db.relationship("User", backref=db.backref("memberships", lazy=True))
-    group = db.relationship("Group", backref=db.backref("memberships", lazy=True))
 
 
 class Activity(db.Model):
