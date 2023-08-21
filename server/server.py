@@ -82,12 +82,12 @@ def login():
         return jsonify({"msg": "Invalid username or password"}), 401
     
     # record activity in Acitvity DB
-    points = 10
-    activity_logged = "logged_in"
-    timestamp = datetime.now()
-    activity_log = Activity(username=username, activity_date = timestamp, activity=activity_logged, points=points)
-    db.session.add(activity_log)
-    db.session.commit()
+    # points = 10
+    # activity_logged = "logged_in"
+    # timestamp = datetime.now()
+    # activity_log = Activity(username=username, activity_date = timestamp, activity=activity_logged, points=points)
+    # db.session.add(activity_log)
+    # db.session.commit()
 
     return jsonify({"msg": "Logged in successfully", "success": "true"}), 200
 
@@ -221,7 +221,7 @@ def get_goals_user():
     if not all_goals:
         return jsonify({"msg": "Currently no activities available for this user", "success": "false"}), 404
     all_goals_json = [{'username': goal.username, 'category': goal.category, 'subcategory': goal.subcategory, 
-                    'param_name': goal.param_name, 'param_value': goal.param_value, 'emission': goal.emission, 
+                    'param_name': goal.param_name, 'param_value': goal.param_value, 'emission': round(goal.emission,2), 
                     'goal_id': goal.goal_id } for goal in all_goals]
     
     # aggregatate goals vs actual for each category

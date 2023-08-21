@@ -49,8 +49,8 @@ export default function Chart({inputData, target}) {
             stroke={theme.palette.primary.main}
             dot={false}
           />
-          <Line type="monotone" dataKey="target" stroke="#8884d8" />
-          <Line type="monotone" dataKey="value" stroke="#82ca9d" />
+          <Line type="monotone" dataKey="value" stroke="#8884d8" />
+          <Line type="monotone" dataKey="target" stroke="#82ca9d" />
         </LineChart>
       </ResponsiveContainer>
     </>
