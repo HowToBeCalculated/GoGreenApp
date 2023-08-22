@@ -18,21 +18,32 @@ import DirectionsCarFilledOutlinedIcon from "@mui/icons-material/DirectionsCarFi
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import FastfoodOutlinedIcon from "@mui/icons-material/FastfoodOutlined";
 import SanitizerOutlinedIcon from "@mui/icons-material/SanitizerOutlined";
-import tp1 from "./transport1.jpg";
-import tp2 from "./transport2.jpg";
+import tp1 from "./transport2.jpg";
+import tp2 from "./transports3.jpg";
 
 function GoGreenTransportation() {
   return (
     <div>
-      <Box position={"relative"} width="100%" height="35vh">
+      <Grid
+        container
+        spacing={0}
+        justifyContent={"left"}
+        alignItems={"left"}
+        sx={{
+          paddingBottom: "90px",
+          paddingLeft: "10px",
+          paddingRight: "10px",
+          flexDirection: "column",
+        }}
+      >
         <Typography
           variant="h3"
           fontWeight="bold"
           fontSize="50px"
           sx={{
-            position: "absolute",
-            top: "100px",
-            left: "200px",
+            position: "relative",
+            marginTop: "100px",
+            marginLeft: "200px",
             lineHeight: "70px",
             color: "#404040",
           }}
@@ -41,14 +52,13 @@ function GoGreenTransportation() {
         </Typography>
 
         <Typography
-          variant="h3"
           fontWeight="bold"
           color="#404040"
           fontSize="16px"
           sx={{
-            position: "absolute",
-            top: "195px",
-            left: "200px",
+            position: "relative",
+            marginTop: "20px",
+            marginLeft: "200px",
             lineHeight: "25px",
           }}
         >
@@ -56,40 +66,63 @@ function GoGreenTransportation() {
           Transform Your Transportation Habits and Lead the Way to a Sustainable
           Future!
         </Typography>
-      </Box>
+      </Grid>
 
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        height="60vh"
-        paddingBottom={"100px"}
+          {/* first article */}
+      <Grid
+        container
+        spacing={2}
+        sx={{
+          paddingBottom: "60px",
+          paddingLeft: "30px",
+          paddingRight: "30px",
+        }}
       >
-        <Box
-          display="flex"
-          alignItems="center"
-          justifyContent="right"
-          flex="0"
-          maxHeight="800px"
-          maxWidth={"1300px"}
-          marginRight={"25px"}
+        <Grid
+          item
+          xs={12}
+          sm={12}
+          md={6}
+          lg={9}
+          xl={9}
         >
-          <img
-            src={tp1}
-            alt="tp1"
+          <div
             style={{
               maxHeight: "700px",
-              width: "auto",
+              overflow: "hidden",
               boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.3)",
               borderRadius: "5px",
+              display:"block",
+              margin: 'auto'       
             }}
-          />
-        </Box>
-        <Box flex="2" display="flex" justifyContent="left">
+          >
+            <img
+              src={tp1}
+              alt="tp1"
+              style={{
+                maxHeight: "700px",
+                width: "auto",
+                overflow: "hidden",
+                boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.3)",
+                borderRadius: "5px",
+              }}
+            />
+          </div>
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          sm={12}
+          md={6}
+          lg={3}
+          xl={3}
+          display="flex"
+          justifyContent="left"
+        >
           <Card
+            height={{ xs: "50vh", sm: "80vh", md: "80vh", lg: "90vh" }}
+            width={{ xs: "50vh", sm: "80vh", md: "80vh", lg: "90vh" }}
             sx={{
-              width: 400,
-              height: 700,
               backgroundColor: "#F5F5F5",
               display: "flex",
               flexDirection: "column",
@@ -134,7 +167,7 @@ function GoGreenTransportation() {
                 walking.
               </Typography>
             </CardContent>
-            <CardActions>
+            <CardActions sx={{paddingBottom: '50px'}}>
               <Button
                 variant="outlined"
                 size="medium"
@@ -145,34 +178,42 @@ function GoGreenTransportation() {
               </Button>
             </CardActions>
           </Card>
-        </Box>
-      </Box>
+        </Grid>
+      </Grid>
 
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        height="60vh"
-        paddingBottom={"150px"}
-        paddingTop={"80px"}
+
+
+
+          {/* second article */}
+      <Grid
+        container
+        spacing={2}
+        sx={{
+          paddingBottom: "90px",
+          paddingLeft: "30px",
+          paddingRight: "30px",
+        }}
       >
-        <Box
-          flex="2"
+        
+        <Grid
+          item
+          xs={12}
+          sm={12}
+          md={6}
+          lg={3}
+          xl={3}
           display="flex"
-          alignItems={"center"}
-          justifyContent="right"
-          maxHeight="800px"
-          marginLeft={"25px"}
+          justifyContent="left"
         >
           <Card
+            height={{ xs: "50vh", sm: "80vh", md: "80vh", lg: "90vh" }}
+            width={{ xs: "50vh", sm: "80vh", md: "80vh", lg: "90vh" }}
             sx={{
-              width: 400,
-              height: 700,
               backgroundColor: "#F5F5F5",
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
-              alignItems: "right",
+              alignItems: "left",
             }}
           >
             <CardContent>
@@ -210,7 +251,7 @@ function GoGreenTransportation() {
                 the planet can be widely deployed.
               </Typography>
             </CardContent>
-            <CardActions>
+            <CardActions sx={{paddingBottom: '50px'}}>
               <Button
                 variant="outlined"
                 size="medium"
@@ -221,21 +262,41 @@ function GoGreenTransportation() {
               </Button>
             </CardActions>
           </Card>
-        </Box>
-
-        <Box display="flex" justifyContent="left" flex="0" marginLeft={"25px"}>
-          <img
-            src={tp2}
-            alt="pc1"
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          sm={12}
+          md={6}
+          lg={9}
+          xl={9}
+        >
+          <div
             style={{
               maxHeight: "700px",
-              maxWidth: "1300px",
+              overflow: "hidden",
               boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.3)",
               borderRadius: "5px",
+              display:"block",
+              margin: 'auto'       
             }}
-          />
-        </Box>
-      </Box>
+          >
+            <img
+              src={tp2}
+              alt="tp2"
+              style={{
+                maxHeight: "700px",
+                width: "auto",
+                overflow: "hidden",
+                boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.3)",
+                borderRadius: "5px",
+              }}
+            />
+          </div>
+        </Grid>
+      </Grid>
+
+
     </div>
   );
 }

@@ -135,7 +135,7 @@ const GoGreenUserSettings = ({ selectedItem }) => {
         marginTop="15px"
         marginBottom="20px"
       >
-        <Typography fontSize="13px" fontWeight="bold" paddingLeft="40px">
+        <Typography fontSize="13px" fontWeight="bold" paddingLeft="40px" paddingBottom= "25px">
           Forgot password?
         </Typography>
 
@@ -147,6 +147,7 @@ const GoGreenUserSettings = ({ selectedItem }) => {
             fontSize: "13px",
             fontWeight: "bold",
             textDecoration: "underline",
+            paddingBottom: "30px"
           }}
         >
           Click here to recover

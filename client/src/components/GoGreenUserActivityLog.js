@@ -37,7 +37,7 @@ const GoGreenUserActivityLog = () => {
         Activity Log
       </Typography>
 
-      <Grid item xs={12} md={6}>
+      <Grid item xs={12} md={12} lg={12} xl={12}>
         <List>
           <ListItem sx={{ margin: '10px 0 0 0', paddingBottom: '0px', paddingLeft: "40px"}}>
             <ListItemIcon>

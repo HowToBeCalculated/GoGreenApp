@@ -63,6 +63,7 @@ const GoGreenProfileSidebar = () => {
             borderRadius: "50%",
             backgroundColor: "white",
             boxShadow: "0px 3px 6px rgba(0, 0, 0, 0.16)",
+            marginTop: '30px'
           }}
         >
           <img

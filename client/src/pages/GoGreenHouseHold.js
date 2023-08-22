@@ -27,15 +27,26 @@ import hh5 from "./household5.jpg";
 function GoGreenHousehold() {
   return (
     <div>
-      <Box position={"relative"} width="100%" height="35vh">
+      <Grid
+        container
+        spacing={0}
+        justifyContent={"left"}
+        alignItems={"left"}
+        sx={{
+          paddingBottom: "90px",
+          paddingLeft: "10px",
+          paddingRight: "10px",
+          flexDirection: "column",
+        }}
+      >
         <Typography
           variant="h3"
           fontWeight="bold"
           fontSize="50px"
           sx={{
-            position: "absolute",
-            top: "100px",
-            left: "200px",
+            position: "relative",
+            marginTop: "100px",
+            marginLeft: "200px",
             lineHeight: "70px",
             color: "#404040",
           }}
@@ -44,54 +55,76 @@ function GoGreenHousehold() {
         </Typography>
 
         <Typography
-          variant="h3"
           fontWeight="bold"
           color="#404040"
           fontSize="16px"
           sx={{
-            position: "absolute",
-            top: "195px",
-            left: "200px",
+            position: "relative",
+            marginTop: "20px",
+            marginLeft: "200px",
             lineHeight: "25px",
           }}
         >
           Transform Your Living Space into a Green Oasis: <br />
           Redefine Your Home Practices and Contribute to a Cleaner Planet! 
         </Typography>
-      </Box>
+      </Grid>
 
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        height="60vh"
-        paddingBottom={"100px"}
+          {/* first article */}
+      <Grid
+        container
+        spacing={2}
+        sx={{
+          paddingBottom: "60px",
+          paddingLeft: "30px",
+          paddingRight: "30px",
+        }}
       >
-        <Box
-          display="flex"
-          alignItems="center"
-          justifyContent="right"
-          flex="0"
-          maxHeight="800px"
-          maxWidth={"1300px"}
-          marginRight={"25px"}
+        <Grid
+          item
+          xs={12}
+          sm={12}
+          md={6}
+          lg={9}
+          xl={9}
         >
-          <img
-            src={hh3}
-            alt="hh3"
+          <div
             style={{
               maxHeight: "700px",
-              width: "auto",
+              overflow: "hidden",
               boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.3)",
               borderRadius: "5px",
+              display:"block",
+              margin: 'auto'       
             }}
-          />
-        </Box>
-        <Box flex="2" display="flex" justifyContent="left">
+          >
+            <img
+              src={hh3}
+              alt="hh3"
+              style={{
+                maxHeight: "700px",
+                width: "auto",
+                overflow: "hidden",
+                boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.3)",
+                borderRadius: "5px",
+              }}
+            />
+          </div>
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          sm={12}
+          md={6}
+          lg={3}
+          xl={3}
+          display="flex"
+          justifyContent="left"
+        >
           <Card
+            height={{ xs: "50vh", sm: "80vh", md: "80vh", lg: "90vh" }}
+            width={{ xs: "50vh", sm: "80vh", md: "80vh", lg: "90vh" }}
             sx={{
-              width: 400,
-              height: 700,
               backgroundColor: "#F5F5F5",
               display: "flex",
               flexDirection: "column",
@@ -128,9 +161,10 @@ function GoGreenHousehold() {
                 marginLeft={"15px"}
               >
                 Simple things you can do at any time to reduce your personal and household emissions of carbon dioxide (CO2), the leading greenhouse gas contributor to climate change.
+              
               </Typography>
             </CardContent>
-            <CardActions>
+            <CardActions sx={{paddingBottom: '50px'}}>
               <Button
                 variant="outlined"
                 size="medium"
@@ -141,34 +175,42 @@ function GoGreenHousehold() {
               </Button>
             </CardActions>
           </Card>
-        </Box>
-      </Box>
+        </Grid>
+      </Grid>
 
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        height="60vh"
-        paddingBottom={"150px"}
-        paddingTop={"80px"}
+
+
+
+          {/* second article */}
+      <Grid
+        container
+        spacing={2}
+        sx={{
+          paddingBottom: "90px",
+          paddingLeft: "30px",
+          paddingRight: "30px",
+        }}
       >
-        <Box
-          flex="2"
+        
+        <Grid
+          item
+          xs={12}
+          sm={12}
+          md={6}
+          lg={3}
+          xl={3}
           display="flex"
-          alignItems={"center"}
-          justifyContent="right"
-          maxHeight="800px"
-          marginLeft={"25px"}
+          justifyContent="left"
         >
           <Card
+            height={{ xs: "50vh", sm: "80vh", md: "80vh", lg: "90vh" }}
+            width={{ xs: "50vh", sm: "80vh", md: "80vh", lg: "90vh" }}
             sx={{
-              width: 400,
-              height: 700,
               backgroundColor: "#F5F5F5",
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
-              alignItems: "right",
+              alignItems: "left",
             }}
           >
             <CardContent>
@@ -200,9 +242,10 @@ function GoGreenHousehold() {
                 marginLeft={"15px"}
               >
                 Discover practical ways to reduce your carbon footprint within your household, from energy consumption to waste management.
+              
               </Typography>
             </CardContent>
-            <CardActions>
+            <CardActions sx={{paddingBottom: '50px'}}>
               <Button
                 variant="outlined"
                 size="medium"
@@ -213,21 +256,41 @@ function GoGreenHousehold() {
               </Button>
             </CardActions>
           </Card>
-        </Box>
-
-        <Box display="flex" justifyContent="left" flex="0" marginLeft={"25px"}>
-          <img
-            src={hh5}
-            alt="hh"
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          sm={12}
+          md={6}
+          lg={9}
+          xl={9}
+        >
+          <div
             style={{
               maxHeight: "700px",
-              maxWidth: "1300px",
+              overflow: "hidden",
               boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.3)",
               borderRadius: "5px",
+              display:"block",
+              margin: 'auto'       
             }}
-          />
-        </Box>
-      </Box>
+          >
+            <img
+              src={hh5}
+              alt="hh5"
+              style={{
+                maxHeight: "700px",
+                width: "auto",
+                overflow: "hidden",
+                boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.3)",
+                borderRadius: "5px",
+              }}
+            />
+          </div>
+        </Grid>
+      </Grid>
+      
+      
     </div>
   );
 }

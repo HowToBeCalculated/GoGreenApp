@@ -27,6 +27,7 @@ const Question = ({ question, onAnswer }) => {
   };
 
   return (
+
     <Grid
       container
       spacing={3}
@@ -34,11 +35,11 @@ const Question = ({ question, onAnswer }) => {
       justifyContent="center"
       minHeight="100vh"
     >
-      <Grid item xs={4}>
-        <img src={leaves} alt="Leaves" />
+      <Grid item xs={4} md={4} lg={4} xl={4}>
+        <img src={leaves} alt="Leaves" style={{ width: "100%", height: "100%"}}/>
       </Grid>
-      <Grid item xs={8}>
-        <div className="question" style={{ marginTop: "-150px" }}>
+      <Grid item xs={8} md={8} lg={8} xl={8}>
+        <div className="question" >
           <Typography variant="h6" fontWeight="bold" marginBottom="20px">
             {question.question}
           </Typography>
@@ -73,8 +74,8 @@ const Question = ({ question, onAnswer }) => {
           disabled={selectedAnswer === null}
           variant="contained"
           style={{
-            position: "absolute",
-            bottom: `300px`,
+            position: "relative",
+            marginTop: `50px`,
             color: "white",
             fontWeight: "bold",
           }}
@@ -83,6 +84,7 @@ const Question = ({ question, onAnswer }) => {
         </Button>
       </Grid>
     </Grid>
+
   );
 };
 
@@ -101,10 +103,10 @@ const Result = ({ questions, userAnswers }) => {
       justifyContent="center"
       minHeight="100vh"
     >
-      <Grid item xs={4}>
-        <img src={leaves} alt="Leaves" />
+      <Grid item xs={4} md={4} lg={4} xl={4}>
+        <img src={leaves} alt="Leaves" style={{ width: "100%"}}/>
       </Grid>
-      <Grid item xs={8} style={{ marginTop: "-150px" }}>
+      <Grid item xs={8} md={8} lg={8} xl={8}>
         <Typography variant="h6" fontWeight="bold" marginBottom="20px">
           Your score is {score} out of {questions.length}
         </Typography>
@@ -112,8 +114,8 @@ const Result = ({ questions, userAnswers }) => {
           onClick={() => window.location.reload(false)}
           variant="contained"
           style={{
-            position: "absolute",
-            bottom: `430px`,
+            position: "relative",
+            marginTop: "10px",
             color: "white",
             fontWeight: "bold",
           }}
