@@ -27,6 +27,13 @@ target_metadata = db.metadata
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
 
+import os
+from pathlib import Path
+
+instance_path = Path(__file__).parent.parent / 'instance'
+os.makedirs(instance_path, exist_ok=True)
+
+
 
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode.
