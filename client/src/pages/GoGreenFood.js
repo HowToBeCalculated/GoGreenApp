@@ -1,41 +1,41 @@
 import React from "react";
-import footprint from "./footprint.jpg";
 import {
-  Box,
   Typography,
   Button,
   Card,
   CardContent,
-  CardMedia,
-  CardActionArea,
   CardActions,
-  Avatar,
   Divider,
   Grid,
 } from "@mui/material";
-import { Link } from "react-router-dom";
-import DirectionsCarFilledOutlinedIcon from "@mui/icons-material/DirectionsCarFilledOutlined";
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import FastfoodOutlinedIcon from "@mui/icons-material/FastfoodOutlined";
-import SanitizerOutlinedIcon from "@mui/icons-material/SanitizerOutlined";
 import fd1 from "./food1.jpg";
 import fd2 from "./food2.jpg";
-import hh3 from "./household3.jpg";
-import hh4 from "./household4.jpg";
-import hh5 from "./household5.jpg";
+
 
 function GoGreenFood() {
   return (
     <div>
-      <Box position={"relative"} width="100%" height="35vh">
+
+<Grid
+        container
+        spacing={0}
+        justifyContent={"left"}
+        alignItems={"left"}
+        sx={{
+          paddingBottom: "90px",
+          paddingLeft: "10px",
+          paddingRight: "10px",
+          flexDirection: "column",
+        }}
+      >
         <Typography
           variant="h3"
           fontWeight="bold"
           fontSize="50px"
           sx={{
-            position: "absolute",
-            top: "100px",
-            left: "200px",
+            position: "relative",
+            marginTop: "100px",
+            marginLeft: "200px",
             lineHeight: "70px",
             color: "#404040",
           }}
@@ -44,54 +44,76 @@ function GoGreenFood() {
         </Typography>
 
         <Typography
-          variant="h3"
           fontWeight="bold"
           color="#404040"
           fontSize="16px"
           sx={{
-            position: "absolute",
-            top: "195px",
-            left: "200px",
+            position: "relative",
+            marginTop: "20px",
+            marginLeft: "200px",
             lineHeight: "25px",
           }}
         >
           Delve into Delicious Sustainability: <br />
           Nourish Yourself and the Planet through Thoughtful Food Choices!
         </Typography>
-      </Box>
+      </Grid>
 
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        height="60vh"
-        paddingBottom={"100px"}
+          {/* first article */}
+      <Grid
+        container
+        spacing={2}
+        sx={{
+          paddingBottom: "60px",
+          paddingLeft: "30px",
+          paddingRight: "30px",
+        }}
       >
-        <Box
-          display="flex"
-          alignItems="center"
-          justifyContent="right"
-          flex="0"
-          maxHeight="800px"
-          maxWidth={"1300px"}
-          marginRight={"25px"}
+        <Grid
+          item
+          xs={12}
+          sm={12}
+          md={6}
+          lg={9}
+          xl={9}
         >
-          <img
-            src={fd1}
-            alt="fd1"
+          <div
             style={{
               maxHeight: "700px",
-              width: "auto",
+              overflow: "hidden",
               boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.3)",
               borderRadius: "5px",
+              display:"block",
+              margin: 'auto'       
             }}
-          />
-        </Box>
-        <Box flex="2" display="flex" justifyContent="left">
+          >
+            <img
+              src={fd1}
+              alt="fd1"
+              style={{
+                maxHeight: "700px",
+                width: "auto",
+                overflow: "hidden",
+                boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.3)",
+                borderRadius: "5px",
+              }}
+            />
+          </div>
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          sm={12}
+          md={6}
+          lg={3}
+          xl={3}
+          display="flex"
+          justifyContent="left"
+        >
           <Card
+            height={{ xs: "50vh", sm: "80vh", md: "80vh", lg: "90vh" }}
+            width={{ xs: "50vh", sm: "80vh", md: "80vh", lg: "90vh" }}
             sx={{
-              width: 400,
-              height: 700,
               backgroundColor: "#F5F5F5",
               display: "flex",
               flexDirection: "column",
@@ -138,10 +160,11 @@ function GoGreenFood() {
                 start.
               </Typography>
             </CardContent>
-            <CardActions>
+            <CardActions sx={{paddingBottom: '50px'}}>
               <Button
                 variant="outlined"
                 size="medium"
+                target="_blank"
                 href="https://www.healthline.com/nutrition/how-to-reduce-carbon-footprint"
                 sx={{ color: "#404040", marginTop: "10px", marginLeft: "20px" }}
               >
@@ -149,34 +172,42 @@ function GoGreenFood() {
               </Button>
             </CardActions>
           </Card>
-        </Box>
-      </Box>
+        </Grid>
+      </Grid>
 
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        height="60vh"
-        paddingBottom={"150px"}
-        paddingTop={"80px"}
+
+
+
+          {/* second article */}
+      <Grid
+        container
+        spacing={2}
+        sx={{
+          paddingBottom: "90px",
+          paddingLeft: "30px",
+          paddingRight: "30px",
+        }}
       >
-        <Box
-          flex="2"
+        
+        <Grid
+          item
+          xs={12}
+          sm={12}
+          md={6}
+          lg={3}
+          xl={3}
           display="flex"
-          alignItems={"center"}
-          justifyContent="right"
-          maxHeight="800px"
-          marginLeft={"25px"}
+          justifyContent="left"
         >
           <Card
+            height={{ xs: "50vh", sm: "80vh", md: "80vh", lg: "90vh" }}
+            width={{ xs: "50vh", sm: "80vh", md: "80vh", lg: "90vh" }}
             sx={{
-              width: 400,
-              height: 700,
               backgroundColor: "#F5F5F5",
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
-              alignItems: "right",
+              alignItems: "left",
             }}
           >
             <CardContent>
@@ -208,12 +239,14 @@ function GoGreenFood() {
                 marginLeft={"15px"}
               >
                 ‘Eat local’ is a common recommendation to reduce the carbon footprint of your diet. But transport tends to account for a small share of greenhouse gas emissions. How does the impact of what you eat compare to where it’s come from?
+              
               </Typography>
             </CardContent>
-            <CardActions>
+            <CardActions sx={{paddingBottom: '50px'}}>
               <Button
                 variant="outlined"
                 size="medium"
+                target="_blank"
                 href="https://ourworldindata.org/food-choice-vs-eating-local"
                 sx={{ color: "#404040", marginTop: "10px", marginLeft: "20px" }}
               >
@@ -221,21 +254,40 @@ function GoGreenFood() {
               </Button>
             </CardActions>
           </Card>
-        </Box>
-
-        <Box display="flex" justifyContent="left" flex="0" marginLeft={"25px"}>
-          <img
-            src={fd2}
-            alt="fd2"
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          sm={12}
+          md={6}
+          lg={9}
+          xl={9}
+        >
+          <div
             style={{
               maxHeight: "700px",
-              maxWidth: "1300px",
+              overflow: "hidden",
               boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.3)",
               borderRadius: "5px",
+              display:"block",
+              margin: 'auto'       
             }}
-          />
-        </Box>
-      </Box>
+          >
+            <img
+              src={fd2}
+              alt="fd2"
+              style={{
+                maxHeight: "700px",
+                width: "auto",
+                overflow: "hidden",
+                boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.3)",
+                borderRadius: "5px",
+              }}
+            />
+          </div>
+        </Grid>
+      </Grid>
+
     </div>
   );
 }

@@ -8,28 +8,28 @@ import UserContext from '../pages/user-context';
 
 const styled = {mt: 2.5, fontFamily : "Poppins", color : 'inherit', marginRight: '15px', marginLeft: '15px', textTransform:"none", ':hover': {color:"#55BDB3"}}
 
-    function NavText({ href, text }) {
+function NavText({ href, text }) {
 
-        return (
-          <>
-            <Typography
-              variant='h6'
-              style={styled}
+    return (
+        <>
+        <Typography
+            variant='h6'
+            style={styled}
+        >
+            <NavLink
+            to={href}
+            style={{
+                color: '#77cac2',
+                textDecoration: 'none',
+                ':hover': {color:"#55BDB3"}
+            }}
             >
-              <NavLink
-                to={href}
-                style={{
-                  color: '#77cac2',
-                  textDecoration: 'none',
-                 ':hover': {color:"#55BDB3"}
-                }}
-              >
-                {text}
-              </NavLink>
-            </Typography>
-            </>
-          )
-        }
+            {text}
+            </NavLink>
+        </Typography>
+        </>
+        )
+    }
 
 export const NavBar = () => {
     const [user, setUser] = useContext(UserContext);

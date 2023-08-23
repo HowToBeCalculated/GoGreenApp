@@ -28,14 +28,12 @@ import {
   
   const data = [
     { icon: <PersonOutlineRoundedIcon />, label: "Profile" },
-    { icon: <MailOutlineRoundedIcon />, label: "Notifications" },
     { icon: <HistoryRoundedIcon />, label: "ActivityLog" },
-    { icon: <SettingsRoundedIcon />, label: "Settings" },
   ];
   
-  const array = ["Profile", "Notifications", "ActivityLog", "Settings"];
-  const GoGreenProfileSidebar = () => {
-    const [value, setValue] = useState();
+  const array = ["Profile", "ActivityLog"];
+  const GoGreenProfileSidebar = ( {name}) => {
+
     return (
       <Box
         sx={{
@@ -63,6 +61,7 @@ import {
               borderRadius: "50%",
               backgroundColor: "white",
               boxShadow: "0px 3px 6px rgba(0, 0, 0, 0.16)",
+              marginTop: '30px'
             }}
           >
             <img
@@ -82,7 +81,7 @@ import {
             fontWeight="bold"
             sx={{ m: "20px 0 0 0" }}
           >
-            Dante Lucca
+            {name}
           </Typography>
         </Box>
   
@@ -151,4 +150,5 @@ import {
   };
   
   export default GoGreenProfileSidebar;
+  
   

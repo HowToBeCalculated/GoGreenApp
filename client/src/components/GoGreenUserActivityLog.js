@@ -1,4 +1,4 @@
-import React from "react";
+import {React, useState, useEffect, useContext} from "react";
 import {
   Container,
   Typography,
@@ -10,11 +10,37 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
-//import { IconDashboard } from '@tabler/icons';
 import "react-pro-sidebar/dist/css/styles.css";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import UserContext from "../pages/user-context";
 
-const GoGreenUserActivityLog = () => {
+//activity item
+function ActivityItem({activity}) {
+    console.log('received: ', activity);
+    return (
+        <>
+          <ListItem key={activity.activity_id}sx={{ margin: '10px 0 0 0', paddingBottom: '0px', paddingLeft: "40px"}}>
+            <ListItemIcon>
+              <NotificationsIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary={activity.activity}
+              secondary={activity.activity_date}
+              primaryTypographyProps={{
+                fontSize: 15,
+              }}
+            />
+            {activity.points}
+          </ListItem>
+          </>
+        
+        );
+}
+
+const GoGreenUserActivityLog = ({activities}) => {
+  console.log('we have received the following information: ', activities);
+
+
   return (
     <Box
       sx={{
@@ -33,34 +59,26 @@ const GoGreenUserActivityLog = () => {
         Activity Log
       </Typography>
 
-      <Grid item xs={12} md={6}>
+      <Grid item xs={12} md={12} lg={12} xl={12}>
         <List>
-          <ListItem sx={{ margin: '10px 0 0 0', paddingBottom: '0px', paddingLeft: "40px"}}>
+        {activities.map((activity) => {
+         return (<>
+          <ListItem key={activity.activity_id}sx={{ margin: '10px 0 0 0', paddingBottom: '0px', paddingLeft: "40px"}}>
             <ListItemIcon>
               <NotificationsIcon />
             </ListItemIcon>
             <ListItemText
-              primary="You have updated your targets."
-              secondary="Just now"
+              primary={activity.activity}
+              secondary={activity.activity_date}
               primaryTypographyProps={{
                 fontSize: 15,
               }}
             />
+            + {activity.points} Points
           </ListItem>
-
-          <ListItem sx={{ margin: '0px 0 0 0' , paddingLeft: "40px"}}>
-            <ListItemIcon>
-              <NotificationsIcon />
-            </ListItemIcon>
-            <ListItemText
-              primary="You have updated your password."
-              secondary="2 hours ago"
-              primaryTypographyProps={{
-                fontSize: 15,
-              }}
-            />
-          </ListItem>
-        </List>
+          </>);
+      })}
+      </List>
       </Grid>
     </Box>
   );

@@ -1,7 +1,8 @@
 // TO DO IMPLEMENT FOOTPRINT
 import React, {useState, useEffect, useContext} from 'react';
 import Box from '@mui/material/Box';
-import { Typography, Grid, Paper, Container, TextField, Button } from '@mui/material';
+import { Typography, Grid, Paper, Container} from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import GoGreenDialog from '../components/GoGreenDialog.js';
 import GoGreenPieChart from '../components/GoGreenPieChart.js';
 import GoGreenDataGrid from '../components/GoGreenDataGrid.js';
@@ -60,19 +61,26 @@ const GoGreenFootprint = () => {
   const [user, setUser] = useContext(UserContext);
   const [total, setTotal] = useState(0);
   const [breakdown, setBreakdown] = useState({});
+  let navigate = useNavigate();
 
   // fetch data from DB for current user
   useEffect(()=> {
+    // check user is logged in 
+    if (user === null){
+      window.alert('Please make sure the user is logged in.');
+      let path = '/'
+      navigate(path);
+    } else {
     //fetch query
-    fetch(`http://localhost:5000/allactivities?username=${user}`)
-    .then(res => res.json())
-    .then(resJson => {
-      if (resJson.success === 'true') {
-        setFootprintData(resJson['content']);
-        setTotal(resJson['total']);
-        setBreakdown(resJson['breakdown']);
-      }}
-      )},[footprintData]);
+      fetch(`http://localhost:5000/allactivities?username=${user}`)
+      .then(res => res.json())
+      .then(resJson => {
+        if (resJson.success === 'true') {
+          setFootprintData(resJson['content']);
+          setTotal(resJson['total']);
+          setBreakdown(resJson['breakdown']);
+        }}
+      )}},[footprintData]);
 
   
   return (

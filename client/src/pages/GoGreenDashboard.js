@@ -12,6 +12,7 @@ import UserContext from './user-context.js';
 import GoGreenDataGrid from '../components/GoGreenDataGrid.js';
 import GoGreenDialog from '../components/GoGreenDialog.js';
 import {all_months} from '../components/subcategories';
+import { useNavigate } from 'react-router-dom';
 
 const flexFormat = { display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly'};
 
@@ -118,6 +119,7 @@ const GoGreenDashboard = () => {
   const [goalsData, setGoalsData] = useState([]);
   const [target, setTarget] = useState(0);
   const [user, setUser] = useContext(UserContext);
+  let navigate = useNavigate();
 
   const date = new Date(); 
   const [currentMonth, setCurrentMonth] = useState(date.getMonth() + 1);
@@ -130,16 +132,21 @@ const GoGreenDashboard = () => {
 
   //fetch data from the database
   useEffect(()=> {
-    fetch(`http://localhost:5000/allgoals?username=${user}&month=${currentMonth}&year=${currentYear}`)
-    .then(res => res.json())
-    .then(resJson => {
-      if (resJson.success === 'true') {
-        setGoalsData(resJson['content']);
-        setPerformanceData(resJson['performance']);
-        setTimeseriesData(resJson['timeseries']);
-        setTarget(resJson['overall_target']);
-      }}
-      )},[currentMonth, currentYear, goalsData]);
+    if (user === null){
+      window.alert('Please make sure the user is logged in.');
+      let path = '/'
+      navigate(path);
+    } else {
+      fetch(`http://localhost:5000/allgoals?username=${user}&month=${currentMonth}&year=${currentYear}`)
+      .then(res => res.json())
+      .then(resJson => {
+        if (resJson.success === 'true') {
+          setGoalsData(resJson['content']);
+          setPerformanceData(resJson['performance']);
+          setTimeseriesData(resJson['timeseries']);
+          setTarget(resJson['overall_target']);
+        }}
+      )}},[currentMonth, currentYear, goalsData]);
     
 
   return (

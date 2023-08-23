@@ -50,16 +50,9 @@ const categoryActivity = [
       parameter: ['km', 'm']
     },
     {
-      label: "Taxi",
-      apicode: "passenger_vehicle-vehicle_type_taxi-fuel_source_na-distance_na-engine_size_na",
-      value: 5,
-      param_used: "distance",
-      parameter: ['km', 'm']
-    },
-    {
       label: "Dairy products",
       apicode: "consumer_goods-type_dairy_products",
-      value: 6,
+      value: 5,
       param_used: "money",
       parameter: ['usd']
     },
@@ -67,62 +60,62 @@ const categoryActivity = [
       label: "Meat products (beef)",
       apicode: "consumer_goods-type_meat_products_beef",
       param_used: "money",
-      value: 7,
+      value: 6,
       parameter: ['usd']
     },
     {
       label: "Meat products (pork)",
       apicode: "consumer_goods-type_meat_products_pork",
-      value: 8,
+      value: 7,
       param_used: "money",
       parameter: ['usd']
     },
     {
       label: "Meat products (poultry)",
       apicode: "consumer_goods-type_meat_products_poultry",
-      value: 9,
+      value: 8,
       param_used: "money",
       parameter: ['usd']
     },
     {
       label: "Fish products",
       apicode: "consumer_goods-type_fish_products",
-      value: 10,
+      value: 9,
       param_used: "money",
       parameter: ['usd']
     },
     {
       label: "Meat products (not elsewhere specified)",
       apicode: "consumer_goods-type_meat_products_not_elsewhere_specified",
-      value: 11,
+      value: 10,
       param_used: "money",
       parameter: ['usd']
     },
     {
     label: "Electricity supplied from grid",
     apicode: "electricity-supply_grid-source_supplier_mix",
-    value: 12,
+    value: 11,
     param_used: "energy",
     parameter: ['kWh']
     },
     {
     label: "Water supply",
     apicode: "water_supply-type_na",
-    value: 13,
+    value: 12,
     param_used: "volume",
     parameter: ['l']
     },
     {
       label: "Clothing",
       apicode: "consumer_goods-type_clothing",
-      value: 14,
+      value: 13,
       param_used: "money",
       parameter: ['usd']
     },
     {
       label: "Cosmetics and Toiletries",
       apicode: "consumer_goods-type_cosmetics_toiletries_personal_care",
-      value: 15,
+      value: 14,
       param_used: "money",
       parameter: ['usd']
       }
