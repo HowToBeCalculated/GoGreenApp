@@ -6,8 +6,9 @@ import UserContext from "../pages/user-context";
 
 const GoGreenUserProfileDetails = ({ info, points }) => {
   console.log('info received: ', info);
+  const [user, setUser] = useContext(UserContext);
   const [inputs, setInputs] = useState({
-    username: info.username,
+    username: user,
     name: info.fullname,
     email: info.email,
     gender: info.gender,

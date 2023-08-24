@@ -328,8 +328,12 @@ def get_profile():
 
     # get currently available profile information 
     user_info = User.query.filter_by(username=username).first()
+    if user_info.birthday != None: 
+        birthday = user_info.birthday.strftime('%Y-%m-%d')
+    else: 
+        birthday = None
     user_info_json = {'username': user_info.username, 'fullname': user_info.fullname, 'email': user_info.email,
-                        'gender': user_info.gender, 'birthday': user_info.birthday.strftime('%Y-%m-%d') } 
+                        'gender': user_info.gender, 'birthday': birthday } 
     
     return jsonify({"msg": "All activities of current user", "success": "true",
                      "Activities" :  all_logs_json[::-1],
