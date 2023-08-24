@@ -82,7 +82,7 @@ Each of us comes from different backgrounds and starting points, making our jour
 * Creating the ERD,
 * Utilizing Postman and APIs,
 * Mastering technologies like MUI and React, and
-* Setting up the backend using Flask and SQLAlchemy.
+* Setting up the backend using Flask, SQLAlchemy, and Alembic.
 
 ## What's next
 Our journey doesn't end here. We have exciting plans for the future of our project:
