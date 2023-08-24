@@ -55,17 +55,18 @@ The motivation for this project was to gain exposure to a range of new technolog
   - Planning process:
     * Creation of user personas to understand who we are targeting and build features accordingly
     * Figma to design the frontend
-    * E-R diagram to design database and DB normalization
+    * ER diagram to design database and DB normalization
   - Building process:
     * Postman to test out the API (Climatiq) used to calculate the emissions
     * React as well as MUI and recharts libraries to build the frontend
-    * Python backend using Flask, SQLAlchemy for DB access and alembic to allow for easily making changed to the DB
+    * Python backend using Flask, SQLAlchemy for DB access and alembic to allow for db migrations (although limited by SQLite choice)
+    * Introduced linting and structured PR process to help code quality
 
 ## Challenges that we ran into
 #### 1. Team Skill Levels:
 Our team consists of four members, and while most of us had limited experience with creating web apps, we embraced the opportunity to learn. Two of our team members were completely / relatively new to the program, which presented a unique learning curve. However, we successfully navigated these challenges with the guidance and support of our more experienced team members.
 #### 2. Unexpected Setback: 
-During the project, we encountered an unexpected setback when one of our team members had to step away due to a broken right hand. Despite this challenge, we adapted our roles and continued to make progress.
+During the project, we encountered an unexpected setback when one of our team members had to step away due to an injury. Despite this challenge, we adapted our roles and continued to make progress.
 #### 3. Work Reallocation: 
 In response to unexpected events, such as certain laptop settings and limitations, we needed to reallocate some tasks and adjust our schedule. This allowed us to maintain our project's momentum and keep moving forward.
 #### 4. Time Zone Differences and Work Commitments:
@@ -82,7 +83,7 @@ Each of us comes from different backgrounds and starting points, making our jour
 * Creating the ERD,
 * Utilizing Postman and APIs,
 * Mastering technologies like MUI and React, and
-* Setting up the backend using Flask, SQLAlchemy, and Alembic.
+* Setting up the backend using Flask, SQLAlchemy, and alembic.
 
 ## What's next
 Our journey doesn't end here. We have exciting plans for the future of our project:
