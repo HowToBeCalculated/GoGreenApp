@@ -18,6 +18,7 @@ const GoGreenProfile = () => {
 
   //retrieve the activity log for the currently logged in user 
   useEffect(()=> {
+    console.log('user is: ', user);
     if (user === null){
       window.alert('Please make sure the user is logged in.');
       let path = '/'
