@@ -73,7 +73,7 @@ def login():
     user = User.query.filter_by(username=username).first()
     if not user or user.password != password:
         return jsonify({"msg": "Invalid username or password"}), 401
-    
+
     # record activity in Acitvity DB
     points = 10
     activity_logged = "logged_in"
@@ -85,7 +85,7 @@ def login():
     return jsonify({"msg": "Logged in successfully", "success": "true"}), 200
 
 @app.route('/newactivity', methods=['POST'])
-def add_activity(): 
+def add_activity():
     print('made it into the add activity function.')
     # collect the input from API request
     username = request.json.get('username')
@@ -101,11 +101,11 @@ def add_activity():
     print('emission received is: ', emission)
 
     # make sure can only access the page if user is not null
-    # in this case no need to double check user information 
+    # in this case no need to double check user information
     # post new information to the DB
     entry = History(username=username, activity_date=activity_date,
             category=category, subcategory=subcategory, param_name=param_name, param_value=param_value,
-            emission=emission)                  
+            emission=emission)
     db.session.add(entry)
     db.session.commit()
 
@@ -128,13 +128,13 @@ def get_activities_user():
     if not all_activties:
         return jsonify({"msg": "Currently no activities available for this user", "success": "false"}), 404
     all_activities_json = [{'username': activity.username, 'activity_date': activity.activity_date,
-                             'category': activity.category, 'subcategory': activity.subcategory, 
-                             'param_name': activity.param_name, 'param_value': activity.param_value, 
+                             'category': activity.category, 'subcategory': activity.subcategory,
+                             'param_name': activity.param_name, 'param_value': activity.param_value,
                              'emission': round(activity.emission,2), 'history_id': activity.history_id } for activity in all_activties]
-    
+
     # get the total emissions and breakdown for the main 4 categories
     transport_total, household_total, food_total, personal_care_total = 0,0,0,0
-    for activity in all_activties: 
+    for activity in all_activties:
         if activity.category == 'Transport':
             transport_total += activity.emission
         elif activity.category == 'Household':
@@ -144,18 +144,18 @@ def get_activities_user():
         elif activity.category == 'Personal Care':
             personal_care_total += activity.emission
     total = round(transport_total + household_total + food_total + personal_care_total,2)
-    
-    return jsonify({"msg": "All activities of current user", "success": "true", 
+
+    return jsonify({"msg": "All activities of current user", "success": "true",
                     "content" : all_activities_json, "total": total,
                     "breakdown" : [
-                        {"name" : "Transport", "value" : round(transport_total,2)}, 
-                        {"name": "Household", "value" : round(household_total,2)}, 
+                        {"name" : "Transport", "value" : round(transport_total,2)},
+                        {"name": "Household", "value" : round(household_total,2)},
                         {"name": "Food", "value" : round(food_total,2)},
                         {"name": "Personal Care", "value" : round(personal_care_total,2)}]}), 200
 
 # routes for set goals page
 @app.route('/newgoal', methods=['POST'])
-def add_goal(): 
+def add_goal():
     print('made it into the add goal function.')
     # collect the input from API request
     username = request.json.get('username')
@@ -171,14 +171,14 @@ def add_goal():
     goal = Goals.query.filter_by(username=username, subcategory=subcategory).first()
 
     # if goal is none we add new entry to the DB
-    if not goal: 
+    if not goal:
         # post new information to the DB
-        entry = Goals(username=username, category=category, subcategory=subcategory, 
-                      param_name=param_name, param_value=param_value, emission=emission)                  
+        entry = Goals(username=username, category=category, subcategory=subcategory,
+                      param_name=param_name, param_value=param_value, emission=emission)
         db.session.add(entry)
         db.session.commit()
     #otherwise we only update the target value
-    else: 
+    else:
         goal.param_name = param_name
         goal.param_value = param_value
         goal.emission = emission
@@ -210,27 +210,27 @@ def get_goals_user():
 
     # return list of all goals
     all_goals= Goals.query.filter_by(username=username).all()
-    if not all_goals: 
+    if not all_goals:
         all_goals_json = []
     else:
-        all_goals_json = [{'username': goal.username, 'category': goal.category, 'subcategory': goal.subcategory, 
-                        'param_name': goal.param_name, 'param_value': goal.param_value, 'emission': round(goal.emission,2), 
+        all_goals_json = [{'username': goal.username, 'category': goal.category, 'subcategory': goal.subcategory,
+                        'param_name': goal.param_name, 'param_value': goal.param_value, 'emission': round(goal.emission,2),
                         'goal_id': goal.goal_id } for goal in all_goals]
-    
+
     # aggregatate goals vs actual for each category
     all_activties = History.query.filter_by(username=username).all()
     if not all_activties and not all_goals:
         return jsonify({"msg": "Currently no data available for this user", "success": "false"}), 404
-    all_activities_json = [{'username': activity.username, 'activity_date': activity.activity_date,
-                             'category': activity.category, 'subcategory': activity.subcategory, 
-                             'param_name': activity.param_name, 'param_value': activity.param_value, 
+    [{'username': activity.username, 'activity_date': activity.activity_date,
+                             'category': activity.category, 'subcategory': activity.subcategory,
+                             'param_name': activity.param_name, 'param_value': activity.param_value,
                              'emission': round(activity.emission,2), 'history_id': activity.history_id } for activity in all_activties]
 
     # aggregate actual for each category in current month and previous month
     transport_total, household_total, food_total, personal_care_total = 0,0,0,0
     transport_total_prev, household_total_prev, food_total_prev, personal_care_total_prev = 0,0,0,0
     prev2_total, prev3_total, prev4_total, prev5_total, prev6_total = 0,0,0,0,0
-    for activity in all_activties: 
+    for activity in all_activties:
         # get data for current month
         if (activity.activity_date.year == year and activity.activity_date.month == month):
             if activity.category == 'Transport':
@@ -261,17 +261,17 @@ def get_goals_user():
             prev5_total +=  activity.emission
         elif (activity.activity_date.year == prev_year_6 and activity.activity_date.month == prev_month_6):
             prev6_total +=  activity.emission
-            
-    
+
+
     # calculate change for each category
     transport_change = transport_total - transport_total_prev
     household_change = household_total - household_total_prev
     food_change = food_total - food_total_prev
     personal_care_change = personal_care_total - personal_care_total_prev
-    
+
     # aggregate target for each category
     transport_target, household_target, food_target, personal_care_target = 0,0,0,0
-    for goal in all_goals: 
+    for goal in all_goals:
         if goal.category == 'Transport':
             transport_target += goal.emission
         elif goal.category == 'Household':
@@ -280,23 +280,23 @@ def get_goals_user():
             food_target += goal.emission
         elif goal.category == 'Personal Care':
             personal_care_target += goal.emission
-    
+
     # agg current and prev months as well for timeseries
     current_month = transport_total + household_total + food_total + personal_care_total
     prev1_total = transport_total_prev + household_total_prev + food_total_prev + personal_care_total_prev
     total_target = transport_target + household_target + food_target + personal_care_target
 
-    return jsonify({"msg": "All activities of current user", "success": "true", 
-                    "content" : all_goals_json, 
-                    "overall_target" : round(total_target,2), 
+    return jsonify({"msg": "All activities of current user", "success": "true",
+                    "content" : all_goals_json,
+                    "overall_target" : round(total_target,2),
                     "performance" : [
-                        {"name" : "Transport", "actual" : round(transport_total,2), 
-                         "target" : round(transport_target,2), "change": round(transport_change, 2)}, 
-                        {"name": "Household", "actual" : round(household_total,2), 
-                         "target" : round(household_target,2), "change": round(household_change, 2)}, 
-                        {"name": "Food", "actual" : round(food_total,2), 
+                        {"name" : "Transport", "actual" : round(transport_total,2),
+                         "target" : round(transport_target,2), "change": round(transport_change, 2)},
+                        {"name": "Household", "actual" : round(household_total,2),
+                         "target" : round(household_target,2), "change": round(household_change, 2)},
+                        {"name": "Food", "actual" : round(food_total,2),
                          "target" : round(food_target,2), "change": round(food_change, 2)},
-                        {"name": "Personal Care", "actual" : round(personal_care_total,2), 
+                        {"name": "Personal Care", "actual" : round(personal_care_total,2),
                          "target" : round(personal_care_target,2), "change": round(personal_care_change, 2)}],
                     "timeseries" : [
                         {"month" : format_month(prev_month_6), "value" : prev6_total, "target" :  round(total_target,2)},
@@ -306,35 +306,35 @@ def get_goals_user():
                         {"month" : format_month(prev_month_2), "value" : prev2_total, "target" :  round(total_target,2)},
                         {"month" : format_month(prev_month), "value" : prev1_total, "target" :  round(total_target,2)},
                         {"month" : format_month(month), "value" : current_month, "target" :  round(total_target,2)}
-                        ] 
+                        ]
                          })
 
 # retrieve all logged activities for a user and their total footprint
 @app.route('/profile', methods=['GET'])
 def get_profile():
     username = request.args.get('username')
-    # get log of all activities 
+    # get log of all activities
     all_logs= Activity.query.filter_by(username=username).all()
-    if not all_logs: 
+    if not all_logs:
         all_logs_json = []
     else:
         all_logs_json = [{'username': log.username, 'activity_date': log.activity_date, 'activity': log.activity,
                         'points': log.points, 'activity_id': log.activity_id } for log in all_logs]
-    
+
     total_points = 0
-    # get total points 
+    # get total points
     for log in all_logs:
         total_points += log.points
 
-    # get currently available profile information 
+    # get currently available profile information
     user_info = User.query.filter_by(username=username).first()
-    if user_info.birthday != None: 
+    if user_info.birthday is not None:
         birthday = user_info.birthday.strftime('%Y-%m-%d')
-    else: 
+    else:
         birthday = None
     user_info_json = {'username': user_info.username, 'fullname': user_info.fullname, 'email': user_info.email,
-                        'gender': user_info.gender, 'birthday': birthday } 
-    
+                        'gender': user_info.gender, 'birthday': birthday }
+
     return jsonify({"msg": "All activities of current user", "success": "true",
                      "Activities" :  all_logs_json[::-1],
                      "Points" : total_points,
@@ -348,23 +348,23 @@ def update_info():
     email = request.json.get('email')
     gender = request.json.get('gender')
     date = request.json.get('birthday')
-    if date: 
+    if date:
         date_format = '%Y-%m-%d'
         birthday = datetime.strptime(date, date_format)
     print('We have received: ', username, fullname, gender, date)
 
     user = User.query.filter_by(username=username).first()
-    if not user: 
+    if not user:
         return jsonify({'msg': 'User does not exist', 'success' : 'false'}), 404
-    else: 
+    else:
         # update all changes in the DB
-        if fullname:  
+        if fullname:
             user.fullname = fullname
-        if gender: 
+        if gender:
             user.gender = gender
         if email:
             user.email = email
-        if date: 
+        if date:
             user.birthday = birthday
         db.session.commit()
         return jsonify({'msg': 'Successfully updated user', 'success' : 'true'}), 201
@@ -375,15 +375,15 @@ def update_info():
 
 
 # get correct previous month and year
-def get_prev_month_year(month, year): 
+def get_prev_month_year(month, year):
     prev_month = month-1
     prev_year = year
-    if (prev_month == 0): 
+    if (prev_month == 0):
         prev_month = 12
         prev_year = year - 1
     return prev_month, prev_year
 
-def format_month(month): 
+def format_month(month):
     months = {1: "January", 2:"Feburary", 3: "March", 4: "April", 5: "May", 6:"June",
               7:"July", 8: "August", 9:"September", 10: "October", 11: "November", 12:"December"}
     return months[month]

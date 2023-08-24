@@ -1,4 +1,3 @@
-from datetime import datetime
 from flask import Flask
 from faker.factory import Factory
 import numpy as np
@@ -7,9 +6,6 @@ import pandas as pd
 from db_tables import (
     db,
     User,
-    Activity,
-    Goals,
-    History,
 )
 
 
