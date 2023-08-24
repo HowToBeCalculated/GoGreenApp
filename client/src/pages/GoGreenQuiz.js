@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-// const Question = ({ question, onAnswer }) => {
-//   const handleAnswer = answer => () => onAnswer(answer);
-
 import {
   Typography,
   TextField,
@@ -27,6 +24,7 @@ const Question = ({ question, onAnswer }) => {
   };
 
   return (
+
     <Grid
       container
       spacing={3}
@@ -34,11 +32,11 @@ const Question = ({ question, onAnswer }) => {
       justifyContent="center"
       minHeight="100vh"
     >
-      <Grid item xs={4}>
-        <img src={leaves} alt="Leaves" />
+      <Grid item xs={4} md={4} lg={4} xl={4}>
+        <img src={leaves} alt="Leaves" style={{ width: "100%", height: "100%"}}/>
       </Grid>
-      <Grid item xs={8}>
-        <div className="question" style={{ marginTop: "-150px" }}>
+      <Grid item xs={8} md={8} lg={8} xl={8}>
+        <div className="question" >
           <Typography variant="h6" fontWeight="bold" marginBottom="20px">
             {question.question}
           </Typography>
@@ -73,8 +71,8 @@ const Question = ({ question, onAnswer }) => {
           disabled={selectedAnswer === null}
           variant="contained"
           style={{
-            position: "absolute",
-            bottom: `300px`,
+            position: "relative",
+            marginTop: `50px`,
             color: "white",
             fontWeight: "bold",
           }}
@@ -83,6 +81,7 @@ const Question = ({ question, onAnswer }) => {
         </Button>
       </Grid>
     </Grid>
+
   );
 };
 
@@ -101,10 +100,10 @@ const Result = ({ questions, userAnswers }) => {
       justifyContent="center"
       minHeight="100vh"
     >
-      <Grid item xs={4}>
-        <img src={leaves} alt="Leaves" />
+      <Grid item xs={4} md={4} lg={4} xl={4}>
+        <img src={leaves} alt="Leaves" style={{ width: "100%"}}/>
       </Grid>
-      <Grid item xs={8} style={{ marginTop: "-150px" }}>
+      <Grid item xs={8} md={8} lg={8} xl={8}>
         <Typography variant="h6" fontWeight="bold" marginBottom="20px">
           Your score is {score} out of {questions.length}
         </Typography>
@@ -112,8 +111,8 @@ const Result = ({ questions, userAnswers }) => {
           onClick={() => window.location.reload(false)}
           variant="contained"
           style={{
-            position: "absolute",
-            bottom: `430px`,
+            position: "relative",
+            marginTop: "10px",
             color: "white",
             fontWeight: "bold",
           }}
@@ -212,94 +211,5 @@ const Quiz = () => {
     />
   );
 };
-
-//     <div>
-//       <h2>{question.question}</h2>
-//       {
-//         question.type === 'MultipleChoice' ?
-//           question.answers.map((answer, index) =>
-//             <button key={index} onClick={handleAnswer(index)}>{answer}</button>
-//           ) :
-//           <div>
-//             <button onClick={handleAnswer(true)} className="mb-3">True</button>
-//             <button onClick={handleAnswer(false)}>False</button>
-//           </div>
-//       }
-//     </div>
-//   );
-// };
-
-// const Result = ({ questions, userAnswers }) => {
-//   const score = questions.reduce((score, question, index) =>
-//     question.correctAnswer === userAnswers[index] ? score + 1 : score,
-//     0
-//   );
-
-//   return (
-//     <div>
-//       <h2>Your score is {score} out of {questions.length}</h2>
-//       <button onClick={() => window.location.reload(false)}>Try Again</button>
-//     </div>
-//   );
-// };
-
-// const Quiz = () => {
-//   const questions = [
-//     {
-//         type: 'MultipleChoice',
-//         question: 'Which of the following activities produces the most carbon emissions?',
-//         answers: ['Driving a car', 'Eating meat', 'Watching TV', 'Planting a tree'],
-//         correctAnswer: 0
-//       },
-//       {
-//         type: 'TrueFalse',
-//         question: 'Carbon emissions can be significantly reduced by recycling and reducing waste?',
-//         correctAnswer: true
-//       },
-//       {
-//         type: 'MultipleChoice',
-//         question: 'Which of these is a way that you can personally help to reduce carbon emissions?',
-//         answers: ['Fly in airplanes more frequently', 'Increase consumption of processed foods', 'Reduce, Reuse, Recycle', 'All of the above'],
-//         correctAnswer: 2
-//       },
-//       {
-//         type: 'TrueFalse',
-//         question: 'Using public transportation instead of a personal car can help to reduce carbon emissions?',
-//         correctAnswer: true
-//       },
-//       {
-//         type: 'MultipleChoice',
-//         question: 'What is the effect of planting trees on carbon emissions?',
-//         answers: ['Increases carbon emissions', 'No effect on carbon emissions', 'Decreases carbon emissions', 'Trees are not related to carbon emissions'],
-//         correctAnswer: 2
-//       },
-//       {
-//         type: 'TrueFalse',
-//         question: 'Eating less meat and more plant-based foods can reduce carbon emissions?',
-//         correctAnswer: true
-//       },
-//       {
-//         type: 'MultipleChoice',
-//         question: 'Which form of energy contributes least to carbon emissions?',
-//         answers: ['Coal', 'Natural Gas', 'Solar', 'Petroleum'],
-//         correctAnswer: 2
-//       }
-//   ];
-
-//   const [currentQuestion, setCurrentQuestion] = useState(0);
-//   const [userAnswers, setUserAnswers] = useState([]);
-
-//   const handleAnswer = answer => {
-//     const nextQuestion = currentQuestion + 1;
-//     setUserAnswers([...userAnswers, answer]);
-//     setCurrentQuestion(nextQuestion);
-//   };
-
-//   return (
-//     currentQuestion < questions.length ?
-//       <Question question={questions[currentQuestion]} onAnswer={handleAnswer} /> :
-//       <Result questions={questions} userAnswers={userAnswers} />
-//   );
-// };
 
 export default Quiz;

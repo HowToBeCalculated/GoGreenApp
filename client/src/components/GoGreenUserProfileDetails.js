@@ -1,18 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Box, Typography, TextField, Button, IconButton } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import CheckIcon from "@mui/icons-material/Check";
+import UserContext from "../pages/user-context";
 
-const GoGreenUserProfileDetails = ({ selectedItem }) => {
-  const initialData = {
-    name: "Dante Lucca",
-    status: "",
-    email: "dante@example.com",
-    gender: "Male",
-    birthday: "dd/mm/yyyy",
-  };
-
-  const [inputs, setInputs] = useState({ ...initialData });
+const GoGreenUserProfileDetails = ({ info, points }) => {
+  console.log('info received: ', info);
+  const [inputs, setInputs] = useState({
+    username: info.username,
+    name: info.fullname,
+    email: info.email,
+    gender: info.gender,
+    birthday: info.birthday});
   const [isEditing, setIsEditing] = useState(false);
   const [isStatusEditing, setIsStatusEditing] = useState(false);
 
@@ -24,9 +23,44 @@ const GoGreenUserProfileDetails = ({ selectedItem }) => {
     setIsStatusEditing(true);
   };
 
+
+  // send updates to the DB
+  const updateInfo = (header) => {
+    console.log('header we are passing is: ', header);
+    fetch(`http://localhost:5000/updateinfo`, header)
+    .then(data => {
+    if (!data.ok) {
+      throw Error(data.status);
+    }
+    return data.json();
+    }).then(update => {
+        console.log('update logged: ', update.success);
+        if (update.success !== 'true') {
+            window.alert('There was an issue updating user information');
+            console.log('Error updating user information.');
+        }})
+    .catch(e => {
+      console.log(e);
+    });
+
+  }
+
+  //trigger DB update through save click
   const handleSaveClick = () => {
     setIsEditing(false);
     setIsStatusEditing(false);
+    console.log('at this point inputs are: ', inputs);
+    // update the DB with the current input values
+    //format for what we post
+    inputs.username = info.username
+    const header = {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(inputs),
+        };
+    updateInfo(header);
   };
 
   const handleInputChange = (e, field) => {
@@ -35,6 +69,7 @@ const GoGreenUserProfileDetails = ({ selectedItem }) => {
       ...prevInputs,
       [field]: value,
     }));
+    console.log('detected an update - new values should be: ', inputs);
   };
 
   return (
@@ -55,58 +90,9 @@ const GoGreenUserProfileDetails = ({ selectedItem }) => {
       >
         Home &gt; Profile{" "}
       </Typography>
+      <Typography sx={{fontFamily: 'Poppins', fontSize: '20px', ml: 3, mt: 3}}>Current points: {points}</Typography>
+      
 
-      {isStatusEditing ? (
-        <form onSubmit={handleSaveClick}>
-          <Box
-            sx={{
-              padding: "8px",
-              display: "flex",
-              alignItems: "center",
-              marginTop: "10px",
-              border: "1px solid #E0E0E0", // Add border
-              borderRadius: "8px",
-              width: "90%",
-              marginLeft: "40px",
-            }}
-          >
-            <TextField
-              name="status"
-              value={inputs.status}
-              onChange={handleStatusEditClick}
-              type="text"
-              sx={{ flexGrow: 1, marginRight: "8px" }}
-              placeholder="Status ..."
-              variant="outlined"
-            />
-            <IconButton type="submit" sx={{ color: "#258B81" }}>
-              <CheckIcon />
-            </IconButton>
-          </Box>
-        </form>
-      ) : (
-        <Box
-          sx={{
-            border: "1px solid #E0E0E0",
-            backgroundColor: "#F5F5F5",
-            padding: "8px",
-            display: "flex",
-            alignItems: "center",
-            marginTop: "20px",
-            marginBottom: "35px",
-            borderRadius: "8px",
-            width: "90%",
-            marginLeft: "40px",
-          }}
-        >
-          <Typography sx={{ fontSize: "15px", flexGrow: 1 }}>
-            {inputs.status || "How do you feel today?"}
-          </Typography>
-          <IconButton onClick={() => setIsStatusEditing(true)}>
-            <EditIcon />
-          </IconButton>
-        </Box>
-      )}
       {isEditing ? (
         <form onSubmit={handleSaveClick}>
           <Box
@@ -130,6 +116,7 @@ const GoGreenUserProfileDetails = ({ selectedItem }) => {
           <span style={{ fontWeight: "bold" }}>Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
             <TextField
               name="name"
+              defaultValue={info.fullname}
               value={inputs.name}
               onChange={(e) => handleInputChange(e, "name")}
               fullWidth
@@ -161,7 +148,7 @@ const GoGreenUserProfileDetails = ({ selectedItem }) => {
             paddingLeft="0px"
             sx={{ flexGrow: 1 }}
           >
-            {inputs.name}
+            {info.fullname}
           </Typography>
           <IconButton onClick={() => setIsEditing(true)}>
             <EditIcon />
@@ -182,13 +169,14 @@ const GoGreenUserProfileDetails = ({ selectedItem }) => {
           {isEditing ? (
             <TextField
               name="email"
+              defaultValue={info.email}
               value={inputs.email}
               onChange={(e) => handleInputChange(e, "email")}
               fullWidth
               variant="outlined"
             />
           ) : (
-            inputs.email
+            info.email
           )}
         </Typography>
         <Typography
@@ -203,13 +191,14 @@ const GoGreenUserProfileDetails = ({ selectedItem }) => {
           {isEditing ? (
             <TextField
               name="gender"
+              defaultValue={info.gender}
               value={inputs.gender}
               onChange={(e) => handleInputChange(e, "gender")}
               fullWidth
               variant="outlined"
             />
           ) : (
-            inputs.gender
+            info.gender
           )}
         </Typography>
         <Typography
@@ -224,18 +213,22 @@ const GoGreenUserProfileDetails = ({ selectedItem }) => {
           {isEditing ? (
             <TextField
               name="birthday"
+              type="date"
+              defaultValue={info.birthday}
               value={inputs.birthday}
               onChange={(e) => handleInputChange(e, "birthday")}
               fullWidth
               variant="outlined"
             />
           ) : (
-            inputs.birthday
+            info.birthday
           )}
         </Typography>
       </Box>
     </Box>
   );
 };
+
+
 
 export default GoGreenUserProfileDetails;

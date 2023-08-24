@@ -8,7 +8,6 @@ const token = process.env.CLIMATIQ;
 
 const GoGreenDialog = ({type}) => {
     const [user, setUser] = useContext(UserContext);
-    //const url_used = ((type !== "goal") ? `http://localhost:5000/newactivity` : `http://localhost:5000/newgoal`);
     const [emission, setEmission] = useState(0);
     const [inputs, setInputs] = useState({
     username : "", 
@@ -129,11 +128,11 @@ const GoGreenDialog = ({type}) => {
       // we only proceed with posting if emissions are not 0
       if (inputs.emission > 0) {
         //set category
-      if (inputs.label < 6) {
+      if (inputs.label < 5) {
         inputs.category = 'Transport';
-      } else if (inputs.label > 5 && inputs.label < 12) {
+      } else if (inputs.label > 4 && inputs.label < 11) {
         inputs.category = 'Food';
-      } else if (inputs.label > 11 && inputs.label < 14){
+      } else if (inputs.label > 10 && inputs.label < 13){
         inputs.category = 'Household';
       } else {
         inputs.category = 'Personal Care';
