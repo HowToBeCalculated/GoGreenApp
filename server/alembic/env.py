@@ -5,6 +5,9 @@ from sqlalchemy import pool
 
 from alembic import context
 
+import os
+from pathlib import Path
+
 from db_tables import db
 
 # this is the Alembic Config object, which provides
@@ -26,9 +29,6 @@ target_metadata = db.metadata
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
-
-import os
-from pathlib import Path
 
 instance_path = Path(__file__).parent.parent / 'instance'
 os.makedirs(instance_path, exist_ok=True)

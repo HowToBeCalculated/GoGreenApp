@@ -8,4 +8,4 @@ line-length = 200
 select = ["E", "F"]
 
 # Never enforce `E731` (strives for declared functions over lambda)
-ignore ["E731"]
+ignore = ["E731"]
