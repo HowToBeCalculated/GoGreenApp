@@ -8,3 +8,5 @@ add_random_data:
 
 run:
 	pipenv run python server.py
+
+setup_and_run: setup add_random_data run
