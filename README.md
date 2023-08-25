@@ -62,7 +62,8 @@ The motivation for this project was to gain exposure to a range of new technolog
     * Introduced linting and structured PR process to help code quality
 
 ## How to run it:
-  - `pip` and `npm` must be installed already
+  - `pip` **and** `npm` **must be installed already**
+
   - **Step 1:** Start the Backend API
     - Open a terminal
     - Go into the server folder (`cd server`)
@@ -72,7 +73,8 @@ The motivation for this project was to gain exposure to a range of new technolog
       - `pipenv install` # installs our necessary packages into a virtual environment
       - `pipenv run alembic upgrade head` # creates our database
       - `pipenv run python server.py` # starts the Flask API
-    - **Step 2:** Start the Web App
+
+  - **Step 2:** Start the Web App
     - Open another terminal
     - Go into the client folder (`cd client`)
     - If on unix based system, run `make setup_and_run`
