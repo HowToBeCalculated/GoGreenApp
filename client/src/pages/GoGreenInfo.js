@@ -58,7 +58,7 @@ function GoGreenInfo() {
       <Box
         position={"relative"}
         width="100%"
-        height={{ xs: "50vh", sm: "80vh", md: "80vh", lg: "90vh" }}
+        height={{ xs: "50vh", sm: "80vh", md: "90vh", lg: "90vh" }}
         backgroundColor= "#393e41"
       >
         <div
@@ -78,23 +78,22 @@ function GoGreenInfo() {
         </div>
 
         <Box
-          width="50%" 
+          width= {{xs: "60%", sm: "60%", md: "55%", lg: "50%", xl: "50%"}} 
           position="absolute"
           top="0px"
         >
 
-        
         <Typography
           variant="h3"
           fontWeight="bold"
           fontFamily="Chalkboard"
           color="#258B81"
-          fontSize={{ xs: "20px", sm: "25px", md: "35px", lg: "45px", xl: "50px" }}
+          fontSize={{ xs: "20px", sm: "25px", md: "30px", lg: "38px", xl: "50px" }}
           sx={{
-            position: "absolute",
-            top: { xs: "30px", sm: "50px", md: "60px", lg: "80px", xl: "90px" },
+            position: "relative",
+            marginTop: { xs: "30px", sm: "40px", md: "50px", lg: "50px", xl: "70px" },
             left: "40px",
-            lineHeight: {xs: "30px", sm: "40px", md: "50px", lg: "70px"},
+            lineHeight: {xs: "30px", sm: "35px", md: "40px", lg: "60px", xl: "80px"},
           }}
         >
           CONFIDENT IN YOUR CARBON 
@@ -107,8 +106,8 @@ function GoGreenInfo() {
           color="#404040"
           fontSize={{ xs: "14px", sm: "15px", md: "16px", lg: "17px", xl: "18px" }}
           sx={{
-            position: "absolute",
-            top: { xs: "130px", sm: "175px", md: "230px", lg: "320px", xl: "300px" },
+            position: "relative",
+            marginTop: { xs: "20px", sm: "30px", md: "30px", lg: "30px", xl: "40px" },
             left: "40px",
             whiteSpace: "pre-line",
             wordWrap: { xs: "break-word", sm: "normal" },
@@ -117,16 +116,15 @@ function GoGreenInfo() {
           Learn more about the impact of carbon footprints and 
           test your knowledge through our interactive quiz!
         </Typography>
-        </Box>
 
         <Button
           LinkComponent={Link}
           to="/practice"
           variant="contained"
-          sx={{top: { xs: "210px", sm: "265px", md: "285px", lg: "385px", xl: "380px" }}}
-          style={{
-            position: "absolute",
-            
+          
+          sx={{
+            position: "relative",
+            marginTop: { xs: "20px", sm: "20px", md: "25px", lg: "30px", xl: "30px" },
             left: "40px",
             color: "white",
             fontWeight: "bold",
@@ -134,6 +132,7 @@ function GoGreenInfo() {
         >
           TAKE THE QUIZ
         </Button>
+        </Box>
 
         <Typography
           variant="h3"
@@ -153,7 +152,8 @@ function GoGreenInfo() {
           Explore how you can make a positive impact <br />
           on the environment
         </Typography>
-
+        
+        
       </Box>
 
       <Grid
